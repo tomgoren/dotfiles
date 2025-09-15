@@ -16,7 +16,6 @@ alias rg="rg -i"
 setopt interactivecomments
 zle_highlight+=(paste:none)
 
-
 export PATH="${HOME}/bin:${PATH}"
 export PATH="${HOME}/.cargo/bin:${PATH}"
 export PATH="${HOME}/.local/bin:${PATH}"
@@ -29,23 +28,14 @@ export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
 
 [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
-source $(brew --prefix zsh-fast-syntax-highlighting)/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-
-source ${HOME}/dev/fzf-zsh-plugin/fzf-zsh-plugin.plugin.zsh
-source ${HOME}/dev/dotfiles/extra_shell_functions.sh
+source "${HOME}/dev/dotfiles/extra_shell_functions.sh"
 
 if [[ -d ${HOME}/work ]]; then
   for script in $(/bin/ls -d ${HOME}/work/shell/*sh); do
-      source ${script}
+    source ${script}
   done
 fi
 
-# Load Git completion
-# Requires:
-# curl -o _git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
-# curl -o git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
-fpath=(~/.zsh $fpath)
 autoload -Uz compinit && compinit
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
@@ -53,4 +43,3 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 eval "$(starship init zsh)"
 
 alias kubectl=kubecolor
-
