@@ -39,6 +39,7 @@ return {
         "tree-sitter-cli",
         "staticcheck",
         "shellcheck",
+        "markdownlint-cli2",
         "taplo",
       },
     },
