@@ -1,4 +1,4 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 
 -- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
@@ -25,18 +25,18 @@ return {
       underline = true,
     },
     -- passed to `vim.filetype.add`
-    filetypes = {
-      -- see `:h vim.filetype.add` for usage
-      extension = {
-        foo = "fooscript",
-      },
-      filename = {
-        [".foorc"] = "fooscript",
-      },
-      pattern = {
-        [".*/etc/foo/.*"] = "fooscript",
-      },
-    },
+    -- filetypes = {
+    --   -- see `:h vim.filetype.add` for usage
+    --   extension = {
+    --     foo = "fooscript",
+    --   },
+    --   filename = {
+    --     [".foorc"] = "fooscript",
+    --   },
+    --   pattern = {
+    --     [".*/etc/foo/.*"] = "fooscript",
+    --   },
+    -- },
     -- vim options can be configured here
     options = {
       opt = { -- vim.opt.<key>
