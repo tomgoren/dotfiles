@@ -1,0 +1,13 @@
+# macOS metadata
+.DS_Store
+
+# Neovim / AstroNvim runtime files
+.nvimlog
+.xdg/
+*.shada
+*.swp
+*.swo
+
+# Generic temporary files
+*.log
+*.tmp
