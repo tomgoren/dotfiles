@@ -1,2 +1,5 @@
+theme = Catppuccin Mocha
+font-family = "SauceCodePro NFM"
+font-size = 19
 window-inherit-working-directory = false
 working-directory = home
