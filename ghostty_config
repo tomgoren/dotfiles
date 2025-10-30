@@ -3,3 +3,5 @@ font-family = "SauceCodePro NFM"
 font-size = 19
 window-inherit-working-directory = false
 working-directory = home
+keybind = cmd+left=previous_tab
+keybind = cmd+right=next_tab
