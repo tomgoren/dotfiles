@@ -1,8 +1,8 @@
 # Neovim
-alias vim=hx
-alias vi=hx
-export GIT_EDITOR=hx
-export EDITOR=hx
+alias vim="nvim -O"
+alias vi=vim
+export GIT_EDITOR="nvim"
+export EDITOR="nvim"
 
 # Listing
 alias ls="eza"
