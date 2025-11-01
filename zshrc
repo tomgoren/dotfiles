@@ -38,8 +38,6 @@ fi
 
 autoload -Uz compinit && compinit
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
-
 eval "$(starship init zsh)"
 
 alias kubectl=kubecolor
