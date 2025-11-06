@@ -11,3 +11,5 @@
 # Generic temporary files
 *.log
 *.tmp
+
+astronvim/lazy-lock.json
