@@ -38,6 +38,11 @@ fi
 
 autoload -Uz compinit && compinit
 
+# Set up fzf key bindings and fuzzy completion if available
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
+
 eval "$(starship init zsh)"
 
 alias kubectl=kubecolor
