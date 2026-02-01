@@ -26,7 +26,14 @@ export PATH="/usr/local/sbin:${PATH}"
 export PATH="${HOME}/.asdf/shims:${PATH}"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
 
-[[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+# Skip Homebrew shellenv in Codex sandbox to avoid ps permission errors.
+if [[ -z "${CODEX_SANDBOX}" ]]; then
+  if [[ -f /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
+else
+  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
+fi
 
 source "${HOME}/dev/dotfiles/extra_shell_functions.sh"
 
