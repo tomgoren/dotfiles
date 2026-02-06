@@ -37,6 +37,10 @@ fi
 
 source "${HOME}/.config/zsh/functions/extra_shell_functions.zsh"
 
+if [[ -f "${HOME}/.config/zsh/git_identity.zsh" ]]; then
+  source "${HOME}/.config/zsh/git_identity.zsh"
+fi
+
 if [[ -f "${HOME}/.config/zsh/secrets.zsh" ]]; then
   source "${HOME}/.config/zsh/secrets.zsh"
 fi

@@ -19,6 +19,7 @@ The chezmoi source state is in `chezmoi/`.
 - `~/.config/ghostty/config`
 - `~/.config/opencode/opencode.jsonc`
 - `~/.config/zsh/functions/extra_shell_functions.zsh`
+- `~/.config/zsh/git_identity.zsh` (generated from profile data)
 - `~/.config/zsh/secrets.zsh` (generated from templates + local machine data)
 - `~/.config/nvim/**` (AstroNvim config)
 
@@ -45,6 +46,14 @@ profile = "personal"
 personal = "/Users/your-user/dev/linear-mcp/build/index.js"
 work = "/Users/your-user/work/linear-mcp/build/index.js"
 
+[data.gitIdentityByProfile.personal]
+name = "Your Name"
+email = "you@example.com"
+
+[data.gitIdentityByProfile.work]
+name = "Your Name"
+email = "you@work.example.com"
+
 [data.secretEnvByProfile.personal]
 # EXAMPLE_TOKEN = "op://Personal Engineering/shell EXAMPLE_TOKEN/credential"
 
@@ -61,6 +70,7 @@ chezmoi apply
 ## Secrets and profiles
 
 - `data.profile` controls which profile-specific values are rendered.
+- Git identity exports are generated from `data.gitIdentityByProfile.<profile>`.
 - Secrets are read at apply-time via `op read op://...` references.
 - Each machine can point at different 1Password accounts/vaults/orgs by setting local data differently.
 

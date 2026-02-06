@@ -7,6 +7,14 @@ profile = "personal"
 personal = "/Users/your-user/dev/linear-mcp/build/index.js"
 work = "/Users/your-user/work/linear-mcp/build/index.js"
 
+[data.gitIdentityByProfile.personal]
+name = "Your Name"
+email = "you@example.com"
+
+[data.gitIdentityByProfile.work]
+name = "Your Name"
+email = "you@work.example.com"
+
 [data.secretEnvByProfile.personal]
 # EXAMPLE_TOKEN = "op://Personal Engineering/shell EXAMPLE_TOKEN/credential"
 
