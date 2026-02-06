@@ -34,9 +34,24 @@ It captures practical commands and style conventions observed in the codebase.
 
 ## Setup / Bootstrap Commands
 
-- Symlink files as needed (see `README.md` and `links`).
-- Install Homebrew packages from `brew_packages` as needed.
+- Legacy manual symlink notes live in `links` (deprecated).
+- Install Homebrew packages via split Brewfiles when using chezmoi:
+  - `brew bundle --file ~/.Brewfile.base`
+  - `brew bundle --file ~/.Brewfile.personal` or `~/.Brewfile.work`
 - Start Neovim once to bootstrap plugins: `nvim`.
+
+### Chezmoi-based Setup
+
+- Preferred distribution path uses `chezmoi` source state in `chezmoi/`.
+- Initialize chezmoi with this source:
+  - `chezmoi init /Users/tomgoren/dev/dotfiles/chezmoi`
+- Apply managed config:
+  - `chezmoi apply`
+- Bootstrap script run by chezmoi (once):
+  - `chezmoi/run_once_after_10_bootstrap.sh.tmpl`
+- Homebrew package sets are stored as:
+  - `Brewfile.base`, `Brewfile.personal`, `Brewfile.work`
+  - `chezmoi/dot_Brewfile.base`, `chezmoi/dot_Brewfile.personal`, `chezmoi/dot_Brewfile.work`
 
 ## Build / Lint / Test Commands
 

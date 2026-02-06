@@ -1,9 +1,7 @@
-ln -s $(pwd)/astronvim ~/.config/nvim
-ln -s $(pwd)/extra_shell_functions.sh ~/work/shell/extra_shell_functions.sh
-ln -s $(pwd)/gitconfig ~/.gitconfig
-ln -s $(pwd)/markdownlint-cli2.jsonc ~/.markdownlint-cli2.jsonc
-ln -s $(pwd)/zshrc ~/.zshrc
-mkdir -p ~/.config/opencode
-ln -s $(pwd)/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc
-mkdir -p ~/.config/ghostty
-ln -s $(pwd)/ghostty_config ~/.config/ghostty/config
+Deprecated: manual links replaced by chezmoi source state in `chezmoi/`.
+
+Use:
+
+1) `chezmoi init /Users/tomgoren/dev/dotfiles/chezmoi`
+2) configure local profile/secrets in `~/.config/chezmoi/chezmoi.toml`
+3) `chezmoi apply`
