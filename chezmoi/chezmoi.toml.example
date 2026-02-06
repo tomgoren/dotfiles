@@ -1,0 +1,14 @@
+sourceDir = "/Users/your-user/dev/dotfiles/chezmoi"
+
+[data]
+profile = "personal"
+
+[data.linearMcpPathByProfile]
+personal = "/Users/your-user/dev/linear-mcp/build/index.js"
+work = "/Users/your-user/work/linear-mcp/build/index.js"
+
+[data.secretEnvByProfile.personal]
+# EXAMPLE_TOKEN = "op://Personal Engineering/shell EXAMPLE_TOKEN/credential"
+
+[data.secretEnvByProfile.work]
+# EXAMPLE_TOKEN = "op://Work Engineering/shell EXAMPLE_TOKEN/credential"
