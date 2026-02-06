@@ -64,6 +64,7 @@ email = "you@work.example.com"
 4. Apply config:
 
 ```sh
+eval "$(op signin --account my.1password.com)"
 chezmoi apply
 ```
 
@@ -73,6 +74,7 @@ chezmoi apply
 - Git identity exports are generated from `data.gitIdentityByProfile.<profile>`.
 - Secrets are read at apply-time via `op read op://...` references.
 - Each machine can point at different 1Password accounts/vaults/orgs by setting local data differently.
+- If `chezmoi apply` renders templates that call `op read`, sign in to 1Password first (for example: `eval "$(op signin --account my.1password.com)"`).
 
 ## Bootstrap
 

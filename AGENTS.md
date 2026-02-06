@@ -46,7 +46,7 @@ It captures practical commands and style conventions observed in the codebase.
 - Initialize chezmoi with this source:
   - `chezmoi init /Users/tomgoren/dev/dotfiles/chezmoi`
 - Apply managed config:
-  - `chezmoi apply`
+  - `eval "$(op signin --account my.1password.com)" && chezmoi apply` (required when templates resolve `op://` secrets)
 - Bootstrap script run by chezmoi (once):
   - `chezmoi/run_once_after_10_bootstrap.sh.tmpl`
 - Homebrew package sets are stored as:
