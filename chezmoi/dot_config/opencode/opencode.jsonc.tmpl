@@ -1,5 +1,6 @@
 {{- $profile := default "personal" .profile -}}
 {{- $mcpPath := coalesce (index (default (dict) .linearMcpPathByProfile) $profile) (printf "%s/dev/linear-mcp/build/index.js" .chezmoi.homeDir) -}}
+{{- $linearEnabled := ne $profile "work" -}}
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
@@ -12,7 +13,7 @@
         "node",
         "{{ $mcpPath }}"
       ],
-      "enabled": true
+      "enabled": {{ $linearEnabled }}
     }
   },
   "provider": {

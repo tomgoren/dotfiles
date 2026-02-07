@@ -1,0 +1,24 @@
+# Work-specific zshrc configuration for Gusto integration
+# This file is managed by chezmoi and only deployed when profile = "work"
+
+# Gusto initialization (company-managed)
+# Sources brew, mise, git-duet, and company aliases
+if [[ -f ~/.gusto/init.sh ]]; then
+  source ~/.gusto/init.sh
+fi
+
+# Gusto-specific PATH additions
+# Workspace scripts for gdev and other tools
+export PATH="$HOME/workspace/tomgoren-gusto-flow/scripts:$PATH"
+
+# Gusto binaries (if they exist)
+if [[ -d /opt/gusto/bin ]]; then
+  export PATH="/opt/gusto/bin:$PATH"
+fi
+
+# Gusto-specific environment variables
+export GUSTO_SSH_SELF_MANAGED=1
+export CLAUDE_CODE_USE_BEDROCK=1
+
+# Note: OBJC_DISABLE_INITIALIZE_FORK_SAFETY is set by ~/.gusto/init.sh
+# Note: GIT_DUET_* variables are set by ~/.gusto/init.sh
