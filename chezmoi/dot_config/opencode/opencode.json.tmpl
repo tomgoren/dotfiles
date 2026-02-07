@@ -1,0 +1,70 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "amazon-bedrock": {
+      "options": {
+        "region": "us-west-2",
+        "profile": "infra-gusto-main"
+      }
+    }
+  },
+  "agent": {
+    "build": {
+      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0"
+    },
+    "plan": {
+      "model": "amazon-bedrock/anthropic.claude-sonnet-4-5-20250929-v1:0"
+    },
+    "explore": {
+      "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0"
+    },
+    "general": {
+      "model": "amazon-bedrock/anthropic.claude-sonnet-4-5-20250929-v1:0"
+    }
+  },
+  "mcp": {
+    "jira_confluence": {
+      "type": "remote",
+      "url": "https://anysource.production.it-services.gustocorp.com/api/v1/proxy/67c92b0d-16e5-4683-bd00-ed298237b53d/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:RUNLAYER_API_KEY}"
+      }
+    },
+    "glean": {
+      "type": "remote",
+      "url": "https://anysource.production.it-services.gustocorp.com/api/v1/proxy/d2e31334-b4af-4787-8f10-8fedb777677f/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:RUNLAYER_API_KEY}"
+      }
+    },
+    "slack": {
+      "type": "remote",
+      "url": "https://anysource.production.it-services.gustocorp.com/api/v1/proxy/2b734a54-d18d-45ea-a68d-d02f8b15c83e/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:RUNLAYER_API_KEY}"
+      }
+    },
+    "gdrive": {
+      "type": "remote",
+      "url": "https://anysource.production.it-services.gustocorp.com/api/v1/proxy/cefe5a47-12b5-4085-b903-c2bb9d208486/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:RUNLAYER_API_KEY}"
+      }
+    },
+    "gdocs": {
+      "type": "remote",
+      "url": "https://anysource.production.it-services.gustocorp.com/api/v1/proxy/8a004083-7dc9-42e8-b21b-b155ffb1e0bb/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:RUNLAYER_API_KEY}"
+      }
+    },
+    "gsheets": {
+      "type": "remote",
+      "url": "https://anysource.production.it-services.gustocorp.com/api/v1/proxy/68a0e0d5-6722-4ed2-95d9-eff602fcace0/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:RUNLAYER_API_KEY}"
+      }
+    }
+  }
+}
+

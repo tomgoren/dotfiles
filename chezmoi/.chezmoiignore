@@ -1,0 +1,11 @@
+# Profile-based file ignores
+# Work profile: ignore personal OpenCode config
+# Personal profile: ignore work OpenCode config
+
+{{ if eq .profile "work" }}
+# Work profile - ignore personal config
+.config/opencode/opencode.jsonc
+{{ else }}
+# Personal profile - ignore work config
+.config/opencode/opencode.json
+{{ end }}
