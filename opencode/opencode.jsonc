@@ -5,11 +5,8 @@
   ],
   "mcp": {
     "linear": {
-      "type": "local",
-      "command": [
-        "node",
-        "/Users/tomgoren/dev/linear-mcp/build/index.js"
-      ],
+      "type": "remote",
+      "url": "https://mcp.linear.app/mcp",
       "enabled": true
     }
   },

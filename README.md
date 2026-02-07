@@ -42,9 +42,8 @@ sourceDir = "/Users/your-user/dev/dotfiles/chezmoi"
 [data]
 profile = "personal"
 
-[data.linearMcpPathByProfile]
-personal = "/Users/your-user/dev/linear-mcp/build/index.js"
-work = "/Users/your-user/work/linear-mcp/build/index.js"
+# Linear MCP now uses the hosted upstream endpoint (https://mcp.linear.app/mcp),
+# so no local linear-mcp path is required.
 
 [data.gitIdentityByProfile.personal]
 name = "Your Name"

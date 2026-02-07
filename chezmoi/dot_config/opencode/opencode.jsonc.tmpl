@@ -1,4 +1,3 @@
-{{- $mcpPath := coalesce (index (default (dict) .linearMcpPathByProfile) "personal") (printf "%s/dev/linear-mcp/build/index.js" .chezmoi.homeDir) -}}
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
@@ -6,11 +5,8 @@
   ],
   "mcp": {
     "linear": {
-      "type": "local",
-      "command": [
-        "node",
-        "{{ $mcpPath }}"
-      ],
+      "type": "remote",
+      "url": "https://mcp.linear.app/mcp",
       "enabled": true
     }
   },

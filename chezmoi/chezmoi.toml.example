@@ -3,9 +3,7 @@ sourceDir = "/Users/your-user/dev/dotfiles/chezmoi"
 [data]
 profile = "personal"
 
-[data.linearMcpPathByProfile]
-personal = "/Users/your-user/dev/linear-mcp/build/index.js"
-work = "/Users/your-user/work/linear-mcp/build/index.js"
+# Linear MCP uses the hosted upstream endpoint, so no local binary path is needed.
 
 [data.gitIdentityByProfile.personal]
 name = "Your Name"
