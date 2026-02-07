@@ -34,7 +34,7 @@ chezmoi init /Users/tomgoren/dev/dotfiles/chezmoi
 
 3. Create local per-machine data at `~/.config/chezmoi/chezmoi.toml`.
 
-You can start from `chezmoi/chezmoi.toml.example`:
+You can start from `chezmoi.toml.example` (kept in the repo root as documentation, not managed by chezmoi):
 
 ```toml
 sourceDir = "/Users/your-user/dev/dotfiles/chezmoi"
