@@ -17,6 +17,51 @@
       "enabled": true
     }
   },
+  "agent": {
+    "build": {
+      "model": "openai/gpt-5.3-codex",
+      "reasoningEffort": "medium",
+      "reasoningSummary": "auto",
+      "textVerbosity": "medium",
+      "steps": 50
+    },
+    "plan": {
+      "model": "opencode/glm-5-free",
+      "steps": 15
+    },
+    "explore": {
+      "model": "opencode/kimi-k2.5-free",
+      "steps": 20
+    },
+    "compaction": {
+      "model": "opencode/glm-5-free"
+    },
+    "title": {
+      "model": "opencode/minimax-m2.5-free"
+    },
+    "draft": {
+      "description": "Quick prototyping and boilerplate with cheaper model. Use for initial scaffolding, simple utilities, or when you want to iterate fast before switching to build agent for final implementation.",
+      "mode": "subagent",
+      "model": "opencode/glm-5",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      },
+      "steps": 10
+    },
+    "review": {
+      "description": "Code review and analysis with read-only access. Use for security audits, performance analysis, or getting a second opinion on code quality.",
+      "mode": "subagent",
+      "model": "opencode/glm-5-free",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false
+      },
+      "steps": 10
+    }
+  },
   "provider": {
     "openai": {
       "options": {
@@ -78,20 +123,20 @@
             ]
           },
           "variants": {
-            "low": {
+            "quick": {
               "reasoningEffort": "low",
               "reasoningSummary": "auto",
-              "textVerbosity": "medium"
+              "textVerbosity": "low"
             },
             "medium": {
               "reasoningEffort": "medium",
               "reasoningSummary": "auto",
               "textVerbosity": "medium"
             },
-            "high": {
+            "deep": {
               "reasoningEffort": "high",
               "reasoningSummary": "detailed",
-              "textVerbosity": "medium"
+              "textVerbosity": "low"
             }
           }
         },
@@ -158,6 +203,20 @@
               "reasoningEffort": "high",
               "reasoningSummary": "detailed",
               "textVerbosity": "medium"
+            }
+          }
+        }
+      }
+    },
+    "opencode": {
+      "models": {
+        "glm-5": {
+          "variants": {
+            "fast": {
+              "temperature": 0.3
+            },
+            "precise": {
+              "temperature": 0.1
             }
           }
         }
