@@ -10,7 +10,7 @@ It captures practical commands and style conventions observed in the codebase.
   - `zshrc`, `extra_shell_functions.sh`
   - `gitconfig`
   - `ghostty_config`
-  - `opencode/opencode.jsonc`
+  - `chezmoi/dot_config/opencode/`
   - `astronvim/` (Lua-based Neovim config)
 - There is no app build pipeline in this repository.
 - There is no formal automated test suite in this repository.
