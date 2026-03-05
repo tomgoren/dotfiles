@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode_file="${HOME}/.config/opencode/mode"
+pro_config="${HOME}/.config/opencode/opencode.pro.jsonc"
+fallback_config="${HOME}/.config/opencode/opencode.jsonc"
+
+usage() {
+  printf 'Usage: opencode-mode <pro|fallback|status>\n' >&2
+}
+
+current_mode() {
+  if [[ ! -f "${mode_file}" ]]; then
+    printf 'fallback\n'
+    return
+  fi
+
+  mode="$(tr -d '[:space:]' < "${mode_file}")"
+  if [[ "${mode}" == "pro" ]]; then
+    printf 'pro\n'
+  else
+    printf 'fallback\n'
+  fi
+}
+
+set_mode() {
+  mkdir -p "$(dirname "${mode_file}")"
+  printf '%s\n' "$1" > "${mode_file}"
+}
+
+case "${1:-status}" in
+  pro)
+    set_mode pro
+    printf 'OpenCode mode set to pro. New shells will use %s\n' "${pro_config}"
+    ;;
+  fallback)
+    set_mode fallback
+    printf 'OpenCode mode set to fallback. New shells will use %s\n' "${fallback_config}"
+    ;;
+  status)
+    mode="$(current_mode)"
+    if [[ "${mode}" == "pro" ]]; then
+      printf 'OpenCode mode: pro (%s)\n' "${pro_config}"
+    else
+      printf 'OpenCode mode: fallback (%s)\n' "${fallback_config}"
+    fi
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac

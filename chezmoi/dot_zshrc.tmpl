@@ -33,6 +33,20 @@ export PATH="/usr/local/sbin:${PATH}"
 export PATH="${HOME}/.asdf/shims:${PATH}"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
 
+opencode_mode_file="${HOME}/.config/opencode/mode"
+if [[ -f "${opencode_mode_file}" ]]; then
+  opencode_mode="$(tr -d '[:space:]' < "${opencode_mode_file}")"
+  if [[ "${opencode_mode}" == "pro" ]]; then
+    export OPENCODE_CONFIG="${HOME}/.config/opencode/opencode.pro.jsonc"
+  else
+    unset OPENCODE_CONFIG
+  fi
+else
+  unset OPENCODE_CONFIG
+fi
+unset opencode_mode
+unset opencode_mode_file
+
 # Skip Homebrew shellenv in Codex sandbox to avoid ps permission errors.
 if [[ -z "${CODEX_SANDBOX}" ]]; then
   if [[ -f /opt/homebrew/bin/brew ]]; then

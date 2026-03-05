@@ -18,6 +18,8 @@ The chezmoi source state is in `chezmoi/`.
 - `~/.Brewfile.work`
 - `~/.config/ghostty/config`
 - `~/.config/opencode/opencode.jsonc`
+- `~/.config/opencode/opencode.pro.jsonc`
+- `~/.local/bin/opencode-mode`
 - `~/.config/zsh/functions/extra_shell_functions.zsh`
 - `~/.config/zsh/git_identity.zsh` (generated from profile data)
 - `~/.config/zsh/secrets.zsh` (generated from templates + local machine data)
@@ -82,3 +84,13 @@ On first apply, chezmoi runs `chezmoi/run_once_after_10_bootstrap.sh` which:
 - runs `brew bundle --file ~/.Brewfile.base` when Homebrew is installed
 - runs `brew bundle --file ~/.Brewfile.<profile>` where profile is from `data.profile`
 - runs a Neovim headless smoke check (`nvim --headless '+qa'`) when Neovim is installed
+
+## OpenCode mode switching
+
+Use `opencode-mode` to switch which OpenCode config new shells use:
+
+- `opencode-mode pro` uses `~/.config/opencode/opencode.pro.jsonc` (OpenAI-only, no `opencode/*` models)
+- `opencode-mode fallback` uses `~/.config/opencode/opencode.jsonc` (current fallback profile)
+- `opencode-mode status` shows the currently configured mode
+
+The mode is stored in `~/.config/opencode/mode`. Open a new terminal after switching.
