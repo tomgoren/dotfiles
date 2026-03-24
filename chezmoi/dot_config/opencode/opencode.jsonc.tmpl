@@ -15,6 +15,16 @@
       "type": "remote",
       "url": "https://mcp.linear.app/mcp",
       "enabled": true
+    },
+    "plane": {
+      "type": "local",
+      "enabled": true,
+      "command": ["uvx", "plane-mcp-server", "stdio"],
+      "environment": {
+        "PLANE_API_KEY": "{env:PLANE_API_KEY}",
+        "PLANE_WORKSPACE_SLUG": "{env:PLANE_WORKSPACE_SLUG}",
+        "PLANE_BASE_URL": "{env:PLANE_BASE_URL}"
+      }
     }
   },
   "agent": {

@@ -4,6 +4,10 @@ if [[ -f "${HOME}/.zshrc.work" ]]; then
   source "${HOME}/.zshrc.work"
 fi
 {{- end }}
+{{- if eq .profile "personal" }}
+export PLANE_WORKSPACE_SLUG="zingbang"
+export PLANE_BASE_URL="https://plane.kismet.engineering"
+{{- end }}
 
 # Neovim
 alias vim="nvim -O"
