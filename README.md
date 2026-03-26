@@ -44,8 +44,8 @@ sourceDir = "/Users/your-user/dev/dotfiles/chezmoi"
 [data]
 profile = "personal"
 
-# Linear MCP now uses the hosted upstream endpoint (https://mcp.linear.app/mcp),
-# so no local linear-mcp path is required.
+# OpenCode personal config keeps Plane MCP in both opencode.jsonc and
+# opencode.pro.jsonc because pro mode switches OPENCODE_CONFIG to the pro file.
 
 [data.gitIdentityByProfile.personal]
 name = "Your Name"
