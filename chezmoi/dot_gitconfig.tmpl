@@ -54,3 +54,18 @@
     line-numbers-plus-style = 28
 [init]
 	defaultBranch = main
+{{- if hasKey .gitIdentityByProfile .profile }}
+{{- $identity := index .gitIdentityByProfile .profile }}
+{{- if hasKey $identity "signingkey" }}
+[user]
+	signingkey = {{ $identity.signingkey }}
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+{{- end }}
+{{- end }}
