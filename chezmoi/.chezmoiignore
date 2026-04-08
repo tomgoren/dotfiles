@@ -1,3 +1,6 @@
+# Lockfiles managed dynamically by their tools
+.config/nvim/lazy-lock.json
+
 # Profile-based file ignores
 # Work profile: ignore personal OpenCode config
 # Personal profile: ignore work OpenCode config
