@@ -1,7 +1,0 @@
-Deprecated: manual links replaced by chezmoi source state in `chezmoi/`.
-
-Use:
-
-1) `chezmoi init /Users/tomgoren/dev/dotfiles/chezmoi`
-2) configure local profile/secrets in `~/.config/chezmoi/chezmoi.toml`
-3) `chezmoi apply`
