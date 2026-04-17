@@ -14,7 +14,7 @@
     "plane": {
       "type": "local",
       "enabled": true,
-      "command": ["uvx", "plane-mcp-server", "stdio"],
+      "command": ["uvx", "--with", "fakeredis<2.35", "plane-mcp-server", "stdio"],
       "environment": {
         "PLANE_API_KEY": "{env:PLANE_API_KEY}",
         "PLANE_WORKSPACE_SLUG": "{env:PLANE_WORKSPACE_SLUG}",
