@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "opencode/gpt-5.4",
+  "model": "opencode/gpt-5.5",
   "small_model": "opencode/gpt-5.4-mini",
   "plugin": [
     "opencode-openai-codex-auth"
@@ -24,14 +24,14 @@
   },
   "agent": {
     "build": {
-      "model": "opencode/gpt-5.4",
+      "model": "opencode/gpt-5.5",
       "reasoningEffort": "medium",
       "reasoningSummary": "auto",
       "textVerbosity": "medium",
       "steps": 50
     },
     "plan": {
-      "model": "opencode/gpt-5.4",
+      "model": "opencode/gpt-5.5",
       "steps": 15
     },
     "explore": {
@@ -180,6 +180,39 @@
         },
         "gpt-5.4": {
           "name": "GPT 5.4 (OAuth)",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high",
+              "reasoningSummary": "detailed",
+              "textVerbosity": "medium"
+            }
+          }
+        },
+        "gpt-5.5": {
+          "name": "GPT 5.5 (OAuth)",
           "limit": {
             "context": 272000,
             "output": 128000
