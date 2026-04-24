@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(echo *)",
+      "Bash(jq *)",
+      "Bash(bats *)",
+      "Bash(grep *)",
+      "Bash(mkdir *)",
+      "Bash(git *)",
+      "Bash(jj *)",
+      "Bash(ruby -c *)",
+      "Bash(bundle exec rspec *)",
+      "Bash(bin/srb *)",
+      "Bash(bin/rubocop *)",
+      "Bash(bin/rspec *)",
+      "Bash(cargo build *)",
+      "Bash(cargo test *)",
+      "Bash(cargo check *)",
+      "Bash(cargo clippy *)",
+      "Bash(cargo fmt *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr list *)",
+      "Bash(bktide *)",
+      "Bash(tmux *)",
+      "Bash(mise ls *)",
+      "Bash(mise ls-remote *)"
+    ],
+    "ask": [
+      "Bash(rm *)",
+      "Bash(jj git push *)",
+      "Bash(git push *)"
+    ],
+    "defaultMode": "auto"
+  },
+  "model": "opus[1m]",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-wrapper.sh"
+  },
+  "enabledPlugins": {
+    "gusto-setup-wizard@gusto-claude-code": true,
+    "claude-introspection@gusto-claude-code": true,
+    "ruby-lsp@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "gusto-claude-code": {
+      "source": {
+        "source": "github",
+        "repo": "gusto/claude-code"
+      }
+    }
+  },
+  "skipAutoPermissionPrompt": true
+}
