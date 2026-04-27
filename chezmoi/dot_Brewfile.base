@@ -18,6 +18,7 @@ brew "neovim"
 brew "tree"
 brew "watch"
 brew "yq"
+brew "rtk"
 
 cask "1password-cli"
 cask "codex"
