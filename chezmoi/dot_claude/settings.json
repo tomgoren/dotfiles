@@ -38,24 +38,6 @@
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline-wrapper.sh"
-  },
-  "enabledPlugins": {
-    "gusto-setup-wizard@gusto-claude-code": true,
-    "claude-introspection@gusto-claude-code": true,
-    "ruby-lsp@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "gusto-claude-code": {
-      "source": {
-        "source": "github",
-        "repo": "gusto/claude-code"
-      }
-    }
-  },
-  "skipAutoPermissionPrompt": true,
   "hooks": {
     "PreToolUse": [
       {
@@ -68,5 +50,24 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-wrapper.sh"
+  },
+  "enabledPlugins": {
+    "gusto-setup-wizard@gusto-claude-code": true,
+    "claude-introspection@gusto-claude-code": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "playground@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "gusto-claude-code": {
+      "source": {
+        "source": "github",
+        "repo": "gusto/claude-code"
+      }
+    }
+  },
+  "skipAutoPermissionPrompt": true
 }
