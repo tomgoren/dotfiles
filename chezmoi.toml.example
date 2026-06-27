@@ -1,0 +1,11 @@
+sourceDir = "/path/to/dotfiles/chezmoi"
+
+[data]
+profile = "personal"
+
+[data.gitIdentityByProfile.personal]
+name = "Your Name"
+email = "you@example.com"
+
+[data.secretEnvByProfile.personal]
+# EXAMPLE_TOKEN = "op://Private Vault/example item/credential"

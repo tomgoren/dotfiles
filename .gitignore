@@ -1,0 +1,16 @@
+# macOS metadata
+.DS_Store
+
+# Neovim runtime files
+.nvimlog
+.xdg/
+*.shada
+*.swp
+*.swo
+
+# Local tool state
+.claude/settings.local.json
+
+# Generic temporary files
+*.log
+*.tmp

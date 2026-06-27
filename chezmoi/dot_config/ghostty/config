@@ -1,0 +1,12 @@
+theme = Catppuccin Mocha
+# font-family = "SauceCodePro NFM"
+font-family = "BlexMono Nerd Font Mono,BlexMono Nerd Font Mono Text"
+font-size = 16
+window-inherit-font-size = true
+window-inherit-working-directory = false
+tab-inherit-working-directory = false
+working-directory = home
+keybind = cmd+left=previous_tab
+keybind = cmd+right=next_tab
+keybind = all:cmd+alt+equal=increase_font_size:2
+keybind = all:cmd+alt+minus=decrease_font_size:2

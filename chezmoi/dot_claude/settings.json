@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(rm *)",
+      "Bash(jj git push *)",
+      "Bash(git push *)"
+    ]
+  },
+  "effortLevel": "medium"
+}

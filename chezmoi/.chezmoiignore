@@ -1,0 +1,2 @@
+# Keep local Claude overrides out of the public source state.
+.claude/settings.local.json

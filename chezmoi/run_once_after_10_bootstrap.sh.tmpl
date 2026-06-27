@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+profile="{{ default "personal" .profile }}"
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew is not installed; skipping brew bundle bootstrap."
+  exit 0
+fi
+
+if [[ -f "${HOME}/.Brewfile.base" ]]; then
+  brew bundle --file "${HOME}/.Brewfile.base"
+fi
+
+if [[ -f "${HOME}/.Brewfile.${profile}" ]]; then
+  brew bundle --file "${HOME}/.Brewfile.${profile}"
+fi
+
+if command -v nvim >/dev/null 2>&1; then
+  nvim --headless '+qa'
+fi
