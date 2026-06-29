@@ -1,2 +1,8 @@
 # Keep local Claude overrides out of the public source state.
 .claude/settings.local.json
+
+{{ if ne (default "personal" .profile) "personal" -}}
+# opencode is personal-only; skip config and helper on work machines.
+.config/opencode
+.local/bin/opencode-mode
+{{ end -}}
