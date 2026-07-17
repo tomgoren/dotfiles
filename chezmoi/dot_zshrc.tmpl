@@ -26,6 +26,12 @@ export PATH="/usr/local/sbin:${PATH}"
 export PATH="${HOME}/.asdf/shims:${PATH}"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
 
+{{/* Define data.extraPathDirsByProfile in ~/.config/chezmoi/chezmoi.toml. */}}
+{{- $extraPathDirs := index (default (dict) .extraPathDirsByProfile) (default "personal" .profile) -}}
+{{- range $dir := $extraPathDirs }}
+export PATH="{{ $dir }}:${PATH}"
+{{- end }}
+
 {{ if eq (default "personal" .profile) "personal" -}}
 opencode_mode_file="${HOME}/.config/opencode/mode"
 if [[ -f "${opencode_mode_file}" ]]; then
