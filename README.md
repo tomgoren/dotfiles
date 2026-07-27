@@ -12,7 +12,7 @@ This repo uses `chezmoi` as the distribution mechanism. The source state is in `
 - `~/.gitconfig`
 - `~/.markdownlint-cli2.jsonc`
 - `~/.Brewfile.base`
-- `~/.Brewfile.personal`
+- `~/.Brewfile.<profile>`
 - `~/.config/ghostty/config`
 - `~/.config/opencode/opencode.jsonc`
 - `~/.config/opencode/opencode.pro.jsonc`
@@ -71,6 +71,16 @@ On first apply, chezmoi runs `chezmoi/run_once_after_10_bootstrap.sh` which:
 - runs `brew bundle --file ~/.Brewfile.base` when Homebrew is installed
 - runs `brew bundle --file ~/.Brewfile.<profile>` where profile is from `data.profile`
 - runs a Neovim headless smoke check (`nvim --headless '+qa'`) when Neovim is installed
+
+## Brewfile maintenance
+
+Run `mise run brew:sync` to dump the packages installed on the current machine. The task reads
+`data.profile` from chezmoi and updates the matching personal or work Brewfile.
+
+When both profile inventories exist, packages present on both machines are moved to
+`dot_Brewfile.base`; each profile file retains only that machine's unique packages. On the first
+run, if the other profile has not been captured yet, the existing base is preserved until the task
+runs on that machine.
 
 ## OpenCode mode switching
 

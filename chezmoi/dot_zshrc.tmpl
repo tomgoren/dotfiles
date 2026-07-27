@@ -27,7 +27,7 @@ export PATH="${HOME}/.asdf/shims:${PATH}"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
 
 {{/* Define data.extraPathDirsByProfile in ~/.config/chezmoi/chezmoi.toml. */}}
-{{- $extraPathDirs := index (default (dict) .extraPathDirsByProfile) (default "personal" .profile) -}}
+{{- $extraPathDirs := index (default (dict) (get . "extraPathDirsByProfile")) (default "personal" .profile) -}}
 {{- range $dir := $extraPathDirs }}
 export PATH="{{ $dir }}:${PATH}"
 {{- end }}

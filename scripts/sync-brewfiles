@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+brewfile_dir="${repo_root}/chezmoi"
+base_file="${brewfile_dir}/dot_Brewfile.base"
+
+for command in brew chezmoi; do
+  if ! command -v "${command}" >/dev/null 2>&1; then
+    printf 'Required command not found: %s\n' "${command}" >&2
+    exit 1
+  fi
+done
+
+profile="$(chezmoi execute-template '{{ get . "profile" }}')"
+case "${profile}" in
+  personal) other_profile="work" ;;
+  work) other_profile="personal" ;;
+  *)
+    printf 'Unsupported chezmoi profile %q; expected personal or work.\n' "${profile}" >&2
+    exit 1
+    ;;
+esac
+
+profile_file="${brewfile_dir}/dot_Brewfile.${profile}"
+other_file="${brewfile_dir}/dot_Brewfile.${other_profile}"
+temp_dir="$(mktemp -d)"
+trap 'rm -rf "${temp_dir}"' EXIT
+
+brew bundle dump --force --no-describe --file="${temp_dir}/installed"
+LC_ALL=C sort -u "${temp_dir}/installed" > "${temp_dir}/current"
+LC_ALL=C sort -u "${base_file}" > "${temp_dir}/base"
+
+if [[ -f "${other_file}" ]]; then
+  LC_ALL=C sort -u "${temp_dir}/base" "${other_file}" > "${temp_dir}/other"
+  LC_ALL=C comm -12 "${temp_dir}/current" "${temp_dir}/other" > "${temp_dir}/new-base"
+  LC_ALL=C comm -23 "${temp_dir}/current" "${temp_dir}/new-base" > "${temp_dir}/new-profile"
+  LC_ALL=C comm -23 "${temp_dir}/other" "${temp_dir}/new-base" > "${temp_dir}/new-other"
+
+  mv "${temp_dir}/new-base" "${base_file}"
+  mv "${temp_dir}/new-profile" "${profile_file}"
+  mv "${temp_dir}/new-other" "${other_file}"
+else
+  LC_ALL=C comm -23 "${temp_dir}/current" "${temp_dir}/base" > "${temp_dir}/new-profile"
+  mv "${temp_dir}/new-profile" "${profile_file}"
+  printf 'No %s inventory exists yet; preserving the current base until sync runs on that machine.\n' "${other_profile}"
+fi
+
+printf 'Updated Brewfiles for the %s profile.\n' "${profile}"
