@@ -1,4 +1,3 @@
-
 brew "abseil"
 brew "anomalyco/tap/opencode"
 brew "asciinema"
