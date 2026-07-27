@@ -82,6 +82,10 @@ When both profile inventories exist, packages present on both machines are moved
 run, if the other profile has not been captured yet, the existing base is preserved until the task
 runs on that machine.
 
+`chezmoi/dot_Brewfile.work` is intentionally ignored by Git. It remains local to the work machine
+for synchronization and chezmoi application, while only the shared base and personal inventory are
+intended for the public repository.
+
 ## OpenCode mode switching
 
 Use `opencode-mode` to switch which OpenCode config new shells use:

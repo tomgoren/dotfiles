@@ -49,6 +49,7 @@ It captures practical commands and style conventions observed in the codebase.
   - `chezmoi/run_once_after_10_bootstrap.sh.tmpl`
 - Homebrew package sets are stored as:
   - `chezmoi/dot_Brewfile.base`, `chezmoi/dot_Brewfile.<profile>`
+- `chezmoi/dot_Brewfile.work` is machine-local and intentionally ignored by Git.
 
 ## Build / Lint / Test Commands
 
