@@ -53,7 +53,7 @@ gpub() {
 }
 
 gprune() {
-  local branch tracking worktree_path
+  local branch tracking worktree_path main_worktree
 
   git rev-parse --git-dir >/dev/null 2>&1 || {
     echo "Not inside a Git repository." >&2
@@ -63,11 +63,18 @@ gprune() {
   git fetch --all --prune || return
   git worktree prune || return
 
+  main_worktree="$(git worktree list --porcelain | awk '/^worktree /{print substr($0, 10); exit}')"
+
   while IFS=$'\t' read -r branch tracking; do
     [[ "${tracking}" == "[gone]" ]] || continue
 
     worktree_path="$(gworktree "${branch}")"
     if [[ -n "${worktree_path}" ]]; then
+      if [[ "${worktree_path}" == "${main_worktree}" ]]; then
+        echo "Skipping ${branch}; it is checked out in the main working tree at ${worktree_path}." >&2
+        continue
+      fi
+
       if [[ -n "$(git -C "${worktree_path}" status --porcelain)" ]]; then
         echo "Skipping ${branch}; its worktree at ${worktree_path} has uncommitted changes."
         continue
@@ -100,19 +107,14 @@ gfresh() {
     if [[ -n "${default_worktree}" ]]; then
       echo "Leaving ${current_branch:-detached HEAD} and moving to the canonical ${default_branch} directory at ${default_worktree}."
       cd "${default_worktree}" || return
-      current_branch="${default_branch}"
-    fi
-  fi
-
-  gprune || return
-
-  if [[ "${current_branch}" != "${default_branch}" ]]; then
-    if git show-ref --verify --quiet "refs/heads/${default_branch}"; then
+    elif git show-ref --verify --quiet "refs/heads/${default_branch}"; then
       git switch "${default_branch}" || return
     else
       git switch --track "origin/${default_branch}" || return
     fi
   fi
+
+  gprune || return
 
   git merge --ff-only "origin/${default_branch}" || return
   echo "Ready on ${default_branch}."
