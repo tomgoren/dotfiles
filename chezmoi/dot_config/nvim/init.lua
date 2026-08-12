@@ -16,6 +16,7 @@ vim.pack.add({
   "https://github.com/nvim-mini/mini.keymap",
   "https://github.com/nvim-mini/mini.pairs",
   "https://github.com/nvim-mini/mini.statusline",
+  "https://github.com/nvim-mini/mini.surround",
   "https://github.com/tpope/vim-sleuth",
 })
 
@@ -67,6 +68,8 @@ map_multistep("i", "<CR>", { "pmenu_accept", "minipairs_cr" })
 map_multistep("i", "<BS>", { "minipairs_bs" })
 
 require("mini.pairs").setup()
+
+require("mini.surround").setup()
 
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
