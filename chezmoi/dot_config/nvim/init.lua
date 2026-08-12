@@ -67,7 +67,11 @@ map_multistep("i", "<S-Tab>", { "pmenu_prev" })
 map_multistep("i", "<CR>", { "pmenu_accept", "minipairs_cr" })
 map_multistep("i", "<BS>", { "minipairs_bs" })
 
-require("mini.pairs").setup()
+require("mini.pairs").setup({
+  mappings = {
+    ["("] = { neigh_pattern = "^[^\\][^%w_]" },
+  },
+})
 
 require("mini.surround").setup()
 
