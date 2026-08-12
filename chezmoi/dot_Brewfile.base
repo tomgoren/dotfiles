@@ -21,7 +21,7 @@ brew "jq"
 brew "kubectx"
 brew "libyaml"
 brew "mise"
-brew "neovim"
+brew "neovim", args: ["HEAD"]
 brew "node"
 brew "openssl@3"
 brew "readline"
