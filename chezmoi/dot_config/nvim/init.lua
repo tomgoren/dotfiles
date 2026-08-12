@@ -105,6 +105,27 @@ vim.lsp.config("lua_ls", {
   },
 })
 
+vim.lsp.config("gopls", {
+  settings = {
+    gopls = {
+      gofumpt = true,
+      staticcheck = true,
+    },
+  },
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function(event)
+    vim.lsp.buf.format({
+      bufnr = event.buf,
+      filter = function(client)
+        return client.name == "gopls"
+      end,
+    })
+  end,
+})
+
 local function goto_first_definition()
   vim.lsp.buf.definition({
     reuse_win = true,
