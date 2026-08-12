@@ -1,6 +1,9 @@
 # Keep local Claude overrides out of the public source state.
 .claude/settings.local.json
 
+# Neovim regenerates this as plugins are updated.
+.config/nvim/nvim-pack-lock.json
+
 {{ if ne (default "personal" .profile) "personal" -}}
 # opencode is personal-only; skip config and helper on work machines.
 .config/opencode
