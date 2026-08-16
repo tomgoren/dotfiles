@@ -24,6 +24,7 @@ vim.g.mapleader = " "
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect", "fuzzy", "popup" }
 vim.opt.expandtab = true
+vim.opt.ignorecase = true
 vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 vim.opt.tabstop = 2
