@@ -56,6 +56,10 @@ vim.cmd.colorscheme("tokyonight")
 require("mini.icons").setup()
 MiniIcons.tweak_lsp_kind()
 
+local pick = require("mini.pick")
+pick.setup()
+vim.keymap.set("n", "<leader>b", pick.builtin.buffers, { desc = "Select buffer" })
+
 require("mini.comment").setup()
 
 require("mini.completion").setup()
