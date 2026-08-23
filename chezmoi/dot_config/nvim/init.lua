@@ -28,6 +28,8 @@ vim.opt.ignorecase = true
 vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 vim.opt.tabstop = 2
+vim.opt.splitright = true
+vim.opt.splitbelow = true
 
 require("tokyonight").setup({
   style = "night",
@@ -59,6 +61,15 @@ MiniIcons.tweak_lsp_kind()
 local pick = require("mini.pick")
 pick.setup()
 vim.keymap.set("n", "<leader>b", pick.builtin.buffers, { desc = "Select buffer" })
+vim.keymap.set("n", "<leader>T", function()
+  vim.cmd("vsplit")
+  vim.cmd("terminal")
+end, { desc = "Open terminal" })
+vim.keymap.set("n", "<leader>t", function()
+  vim.cmd("botright 15split")
+  vim.cmd("terminal")
+end, { desc = "Open terminal" })
+vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Leave terminal mode" })
 
 require("mini.comment").setup()
 
