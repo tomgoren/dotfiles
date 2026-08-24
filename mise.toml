@@ -1,3 +1,7 @@
 [tasks."brew:sync"]
 description = "Sync installed Homebrew packages into profile Brewfiles"
 run = "./scripts/sync-brewfiles"
+
+[tasks."mason:update"]
+description = "Install and update the persisted Mason tool inventory"
+run = "nvim --headless '+MasonToolsUpdateSync' '+qa'"

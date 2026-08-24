@@ -61,6 +61,8 @@ Because this is a dotfiles repo, prefer validation + lint over "build".
   - `nvim --headless '+qa'`
 - Synchronize installed Homebrew packages into the split Brewfiles:
   - `mise run brew:sync`
+- Install and update the persisted Mason tool inventory:
+  - `mise run mason:update`
 
 ### Lint / Format Commands
 

@@ -6,6 +6,7 @@ vim.pack.add({
   "https://github.com/sainnhe/everforest",
   "https://github.com/mason-org/mason-lspconfig.nvim",
   "https://github.com/mason-org/mason.nvim",
+  "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
   "https://github.com/neovim/nvim-lspconfig",
   "https://github.com/nvim-mini/mini.nvim",
   "https://github.com/nvim-mini/mini.comment",
@@ -193,16 +194,24 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+local mason_packages = {
+  "bashls",
+  "gopls",
+  "jsonls",
+  "lua_ls",
+  "pyright",
+  "ts_ls",
+  "yamlls",
+}
+
 require("mason").setup()
 require("mason-lspconfig").setup({
-  ensure_installed = {
-    "bashls",
-    "gopls",
-    "jsonls",
-    "lua_ls",
-    "pyright",
-    "ts_ls",
-    "yamlls",
-  },
+  ensure_installed = mason_packages,
   automatic_enable = { exclude = { "basedpyright" } },
+})
+require("mason-tool-installer").setup({
+  ensure_installed = mason_packages,
+  auto_update = true,
+  run_on_start = #vim.api.nvim_list_uis() > 0,
+  debounce_hours = 24,
 })

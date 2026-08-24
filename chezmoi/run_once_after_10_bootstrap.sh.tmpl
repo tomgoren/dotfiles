@@ -17,5 +17,5 @@ if [[ -f "${HOME}/.Brewfile.${profile}" ]]; then
 fi
 
 if command -v nvim >/dev/null 2>&1; then
-  nvim --headless '+qa'
+  nvim --headless '+MasonToolsInstallSync' '+qa'
 fi

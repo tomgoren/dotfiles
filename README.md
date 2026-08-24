@@ -70,7 +70,13 @@ On first apply, chezmoi runs `chezmoi/run_once_after_10_bootstrap.sh` which:
 
 - runs `brew bundle --file ~/.Brewfile.base` when Homebrew is installed
 - runs `brew bundle --file ~/.Brewfile.<profile>` where profile is from `data.profile`
-- runs a Neovim headless smoke check (`nvim --headless '+qa'`) when Neovim is installed
+- installs the persisted Mason tool inventory with headless Neovim when Neovim is installed
+
+## Mason maintenance
+
+Mason tools are declared in `chezmoi/dot_config/nvim/init.lua`. Interactive Neovim starts check for
+missing packages and updates at most once every 24 hours. Run `mise run mason:update` to install or
+update the full inventory immediately.
 
 ## Brewfile maintenance
 
