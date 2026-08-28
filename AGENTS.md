@@ -15,15 +15,6 @@ It captures practical commands and style conventions observed in the codebase.
 - There is no app build pipeline in this repository.
 - There is no formal automated test suite in this repository.
 
-## Rule Files Check
-
-- Checked for Cursor rules:
-  - `.cursorrules` (not present)
-  - `.cursor/rules/` (not present)
-- Checked for Copilot rules:
-  - `.github/copilot-instructions.md` (not present)
-- Action: no extra agent rule files need to be merged beyond this document.
-
 ## Environment and Tooling
 
 - Primary language in `chezmoi/dot_config/nvim/`: Lua.
