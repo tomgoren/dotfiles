@@ -123,6 +123,119 @@ if #vim.api.nvim_list_uis() > 0 then
   require("nvim-treesitter").install(treesitter_parsers)
 end
 
+-- No language server validates plain `.hcl`: terraform-ls only checks files in a
+-- terraform module and terragrunt-ls reports no diagnostics at all. Shell out to
+-- terragrunt when it is available, and fall back to tree-sitter parse errors.
+local hcl_diagnostics_ns = vim.api.nvim_create_namespace("hcl_diagnostics")
+
+local function publish_syntax_diagnostics(buf)
+  local ok, parser = pcall(vim.treesitter.get_parser, buf)
+  if not ok or parser == nil then
+    return
+  end
+
+  local query = vim.treesitter.query.parse(parser:lang(), "(ERROR) @error")
+  local diagnostics = {}
+
+  for _, tree in ipairs(parser:parse() or {}) do
+    for _, node in query:iter_captures(tree:root(), buf, 0, -1) do
+      local lnum, col, end_lnum, end_col = node:range()
+      table.insert(diagnostics, {
+        lnum = lnum,
+        col = col,
+        end_lnum = end_lnum,
+        end_col = end_col,
+        severity = vim.diagnostic.severity.ERROR,
+        source = "treesitter",
+        message = "Syntax error",
+      })
+    end
+  end
+
+  vim.diagnostic.set(hcl_diagnostics_ns, buf, diagnostics)
+end
+
+-- `terragrunt hcl validate` reads from disk and follows the include chain, so it
+-- also reports problems in parent configs that this buffer cannot display
+local function publish_terragrunt_diagnostics(buf, entries)
+  local file = vim.api.nvim_buf_get_name(buf)
+  local diagnostics = {}
+  local elsewhere = {}
+
+  for _, entry in ipairs(entries) do
+    local range = entry.range
+    if type(range) == "table" and range.start ~= nil and range["end"] ~= nil then
+      local message = entry.summary or "Validation error"
+      if entry.detail ~= nil then
+        message = message .. ": " .. entry.detail
+      end
+
+      if range.filename == file then
+        table.insert(diagnostics, {
+          lnum = range.start.line - 1,
+          col = range.start.column - 1,
+          end_lnum = range["end"].line - 1,
+          end_col = range["end"].column - 1,
+          severity = entry.severity == "warning" and vim.diagnostic.severity.WARN or vim.diagnostic.severity.ERROR,
+          source = "terragrunt",
+          message = message,
+        })
+      else
+        table.insert(elsewhere, vim.fs.basename(range.filename or "?") .. ":" .. range.start.line .. " " .. message)
+      end
+    end
+  end
+
+  vim.diagnostic.set(hcl_diagnostics_ns, buf, diagnostics)
+
+  if #elsewhere > 0 then
+    vim.notify("terragrunt: " .. table.concat(elsewhere, "\n"), vim.log.levels.WARN)
+  end
+end
+
+local function validate_hcl(buf)
+  local file = vim.api.nvim_buf_get_name(buf)
+  if file == "" or vim.fn.executable("terragrunt") == 0 then
+    publish_syntax_diagnostics(buf)
+    return
+  end
+
+  local command = {
+    "terragrunt",
+    "hcl",
+    "validate",
+    "--json",
+    "--no-color",
+    "--log-level",
+    "error",
+    "--working-dir",
+    vim.fs.dirname(file),
+  }
+
+  vim.system(command, { text = true }, function(result)
+    vim.schedule(function()
+      if not vim.api.nvim_buf_is_valid(buf) then
+        return
+      end
+
+      local stdout = vim.trim(result.stdout or "")
+      if stdout == "" then
+        -- Nothing to report: terragrunt only prints JSON when it finds problems
+        vim.diagnostic.reset(hcl_diagnostics_ns, buf)
+        return
+      end
+
+      local ok, entries = pcall(vim.json.decode, stdout)
+      if not ok or type(entries) ~= "table" then
+        vim.notify("terragrunt: could not parse validation output", vim.log.levels.WARN)
+        return
+      end
+
+      publish_terragrunt_diagnostics(buf, entries)
+    end)
+  end)
+end
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "hcl", "terraform", "terraform-vars" },
   callback = function(event)
@@ -133,6 +246,20 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 
     vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
+})
+
+-- Only plain `.hcl`: terraform-ls and tflint already cover terraform filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "hcl",
+  callback = function(event)
+    validate_hcl(event.buf)
+    vim.api.nvim_create_autocmd("BufWritePost", {
+      buffer = event.buf,
+      callback = function()
+        validate_hcl(event.buf)
+      end,
+    })
   end,
 })
 
