@@ -8,6 +8,7 @@ vim.pack.add({
   "https://github.com/mason-org/mason.nvim",
   "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
   "https://github.com/neovim/nvim-lspconfig",
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
   "https://github.com/nvim-mini/mini.nvim",
   "https://github.com/nvim-mini/mini.comment",
   "https://github.com/nvim-mini/mini.completion",
@@ -109,6 +110,31 @@ hipatterns.setup({
 require("mini.indentscope").setup()
 
 require("mini.statusline").setup()
+
+local treesitter_parsers = { "hcl", "terraform" }
+
+require("nvim-treesitter").setup()
+
+-- `.tfvars` files get their own filetype but share the terraform grammar
+vim.treesitter.language.register("terraform", "terraform-vars")
+
+if #vim.api.nvim_list_uis() > 0 then
+  -- No-op for parsers that are already installed
+  require("nvim-treesitter").install(treesitter_parsers)
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "hcl", "terraform", "terraform-vars" },
+  callback = function(event)
+    local ok, err = pcall(vim.treesitter.start, event.buf)
+    if not ok then
+      vim.notify("Tree-sitter highlighting unavailable: " .. err, vim.log.levels.WARN)
+      return
+    end
+
+    vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
+})
 
 vim.lsp.config("*", { capabilities = MiniCompletion.get_lsp_capabilities() })
 
