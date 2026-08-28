@@ -1,0 +1,5 @@
+# Retired in favour of a single ~/.Brewfile. Safe to delete this file once every
+# machine has applied it. ~/.Brewfile.work is deliberately not listed: it is the
+# only record of the work machine's packages until they are folded in.
+.Brewfile.base
+.Brewfile.personal

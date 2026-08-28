@@ -10,7 +10,6 @@
 
 # Local tool state
 .claude/settings.local.json
-chezmoi/dot_Brewfile.work
 
 # Generic temporary files
 *.log

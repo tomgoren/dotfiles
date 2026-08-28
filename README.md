@@ -11,8 +11,7 @@ This repo uses `chezmoi` as the distribution mechanism. The source state is in `
 - `~/.zshrc`
 - `~/.gitconfig`
 - `~/.markdownlint-cli2.jsonc`
-- `~/.Brewfile.base`
-- `~/.Brewfile.<profile>`
+- `~/.Brewfile`
 - `~/.config/ghostty/config`
 - `~/.config/opencode/opencode.jsonc`
 - `~/.config/opencode/opencode.pro.jsonc`
@@ -68,8 +67,7 @@ chezmoi apply
 
 On first apply, chezmoi runs `chezmoi/run_once_after_10_bootstrap.sh` which:
 
-- runs `brew bundle --file ~/.Brewfile.base` when Homebrew is installed
-- runs `brew bundle --file ~/.Brewfile.<profile>` where profile is from `data.profile`
+- runs `brew bundle --global` when Homebrew is installed
 - installs the persisted Mason tool inventory with headless Neovim when Neovim is installed
 
 ## Mason maintenance
@@ -80,17 +78,12 @@ update the full inventory immediately.
 
 ## Brewfile maintenance
 
-Run `mise run brew:sync` to dump the packages installed on the current machine. The task reads
-`data.profile` from chezmoi and updates the matching personal or work Brewfile.
+A single `chezmoi/dot_Brewfile` is shared by every machine and applied to `~/.Brewfile`, which is
+Homebrew's global Brewfile location. Install everything with `brew bundle --global`.
 
-When both profile inventories exist, packages present on both machines are moved to
-`dot_Brewfile.base`; each profile file retains only that machine's unique packages. On the first
-run, if the other profile has not been captured yet, the existing base is preserved until the task
-runs on that machine.
-
-`chezmoi/dot_Brewfile.work` is intentionally ignored by Git. It remains local to the work machine
-for synchronization and chezmoi application, while only the shared base and personal inventory are
-intended for the public repository.
+Run `mise run brew:sync` to fold the packages installed on the current machine into that file. The
+task unions rather than replaces, so syncing on one machine never drops packages that only another
+machine has installed. Removing a package from the inventory is a manual edit.
 
 ## OpenCode mode switching
 

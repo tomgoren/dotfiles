@@ -1,6 +1,6 @@
 [tasks."brew:sync"]
-description = "Sync installed Homebrew packages into profile Brewfiles"
-run = "./scripts/sync-brewfiles"
+description = "Sync installed Homebrew packages into the Brewfile"
+run = "./scripts/sync-brewfile"
 
 [tasks."mason:update"]
 description = "Install and update the persisted Mason tool inventory"

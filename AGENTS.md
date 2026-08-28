@@ -33,9 +33,8 @@ It captures practical commands and style conventions observed in the codebase.
 
 ## Setup / Bootstrap Commands
 
-- Install Homebrew packages via split Brewfiles when using chezmoi:
-  - `brew bundle --file ~/.Brewfile.base`
-  - `brew bundle --file ~/.Brewfile.<profile>`
+- Install Homebrew packages from the global Brewfile when using chezmoi:
+  - `brew bundle --global`
 - Start Neovim once to bootstrap plugins: `nvim`.
 
 ### Chezmoi-based Setup
@@ -47,9 +46,7 @@ It captures practical commands and style conventions observed in the codebase.
   - `eval "$(op signin --account my.1password.com)" && chezmoi apply` (required when templates resolve `op://` secrets)
 - Bootstrap script run by chezmoi (once):
   - `chezmoi/run_once_after_10_bootstrap.sh.tmpl`
-- Homebrew package sets are stored as:
-  - `chezmoi/dot_Brewfile.base`, `chezmoi/dot_Brewfile.<profile>`
-- `chezmoi/dot_Brewfile.work` is machine-local and intentionally ignored by Git.
+- Homebrew packages are stored in a single `chezmoi/dot_Brewfile`, applied to `~/.Brewfile`.
 
 ## Build / Lint / Test Commands
 
@@ -59,7 +56,7 @@ Because this is a dotfiles repo, prefer validation + lint over "build".
 
 - Validate Neovim config can start headless:
   - `nvim --headless '+qa'`
-- Synchronize installed Homebrew packages into the split Brewfiles:
+- Fold installed Homebrew packages into the Brewfile (unions, never drops):
   - `mise run brew:sync`
 - Install and update the persisted Mason tool inventory:
   - `mise run mason:update`

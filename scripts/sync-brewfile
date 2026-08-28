@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+brewfile="${repo_root}/chezmoi/dot_Brewfile"
+
+if ! command -v brew >/dev/null 2>&1; then
+  printf 'Required command not found: brew\n' >&2
+  exit 1
+fi
+
+temp_dir="$(mktemp -d)"
+trap 'rm -rf "${temp_dir}"' EXIT
+
+brew bundle dump --force --no-describe --file="${temp_dir}/installed"
+
+# Union rather than replace: the Brewfile is shared by every machine, so a sync
+# run here must not drop packages that only another machine has installed.
+LC_ALL=C sort -u "${temp_dir}/installed" "${brewfile}" > "${temp_dir}/merged"
+mv "${temp_dir}/merged" "${brewfile}"
+
+printf 'Updated %s\n' "${brewfile#"${repo_root}/"}"
