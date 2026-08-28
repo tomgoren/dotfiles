@@ -155,7 +155,6 @@ cask "ngrok"
 cask "nikitabobko/tap/aerospace"
 go "github.com/spf13/cobra-cli"
 npm "@google/gemini-cli"
-npm "@openai/codex"
 npm "netlify-cli"
 tap "anomalyco/tap", trusted: true
 tap "fluxcd/tap", trusted: true
