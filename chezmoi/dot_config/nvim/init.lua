@@ -131,6 +131,26 @@ vim.lsp.config("gopls", {
   },
 })
 
+vim.lsp.config("terraformls", {
+  settings = {
+    terraform = {
+      validation = { enableEnhancedValidation = true },
+    },
+  },
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.tf", "*.tfvars" },
+  callback = function(event)
+    vim.lsp.buf.format({
+      bufnr = event.buf,
+      filter = function(client)
+        return client.name == "terraformls"
+      end,
+    })
+  end,
+})
+
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.go",
   callback = function(event)
@@ -200,6 +220,9 @@ local mason_packages = {
   "jsonls",
   "lua_ls",
   "pyright",
+  "terraformls",
+  "terragrunt_ls",
+  "tflint",
   "ts_ls",
   "yamlls",
 }
