@@ -1,7 +1,6 @@
 brew "abseil"
 brew "anomalyco/tap/opencode"
 brew "asciinema"
-brew "asdf"
 brew "autoconf"
 brew "automake"
 brew "awscli"

@@ -3,3 +3,8 @@
 # only record of the work machine's packages until they are folded in.
 .Brewfile.base
 .Brewfile.personal
+
+# Superseded by ~/.config/mise/config.toml: a config at ~/.mise.toml is a
+# directory-local config for $HOME, not a global one, so its tools do not apply
+# outside the home tree.
+.mise.toml

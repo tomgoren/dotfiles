@@ -8,4 +8,8 @@
 # opencode is personal-only; skip config and helper on work machines.
 .config/opencode
 .local/bin/opencode-mode
+
+# Claude is used differently at work; let that machine's settings drift freely
+# instead of reconciling them against the source state on every apply.
+.claude/settings.json
 {{ end -}}

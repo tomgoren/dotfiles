@@ -12,6 +12,7 @@ It captures practical commands and style conventions observed in the codebase.
   - `chezmoi/dot_config/ghostty/config`
   - `chezmoi/dot_config/opencode/`
   - `chezmoi/dot_config/nvim/` (native Neovim + mini.nvim config)
+  - `chezmoi/dot_config/mise/config.toml` (global mise tool versions)
 - There is no app build pipeline in this repository.
 - There is no formal automated test suite in this repository.
 
@@ -21,6 +22,10 @@ It captures practical commands and style conventions observed in the codebase.
 - Shell files: POSIX shell + zsh usage.
 - Formatting/lint config files: `.stylua.toml`, `chezmoi/dot_markdownlint-cli2.jsonc`.
 - Neovim uses native `vim.pack`, mini.nvim modules, built-in LSP, and Mason-managed language servers.
+- Runtime versions are managed by `mise`. `chezmoi/dot_zshenv` puts mise's shims on `PATH` for
+  non-interactive shells, and `dot_zshrc.tmpl` runs `mise activate zsh` after all `PATH` prepends so
+  interactive shells resolve real tool paths per directory. A repo's `mise.toml` or `.tool-versions`
+  overrides the global config.
 
 ## Setup / Bootstrap Commands
 

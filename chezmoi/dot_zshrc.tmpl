@@ -23,7 +23,6 @@ export PATH="${HOME}/.krew/bin:${PATH}"
 
 export PATH="/usr/local/bin:${PATH}"
 export PATH="/usr/local/sbin:${PATH}"
-export PATH="${HOME}/.asdf/shims:${PATH}"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}"
 
 {{/* Define data.extraPathDirsByProfile in ~/.config/chezmoi/chezmoi.toml. */}}
@@ -76,6 +75,13 @@ autoload -Uz compinit && compinit
 # Set up fzf key bindings and fuzzy completion if available
 if command -v fzf >/dev/null 2>&1; then
   source <(fzf --zsh)
+fi
+
+# Activate mise last so its tool paths win over the PATH prepends above.
+# Global tools come from ~/.config/mise/config.toml; a repo's mise.toml or
+# .tool-versions overrides per directory.
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
 fi
 
 eval "$(starship init zsh)"

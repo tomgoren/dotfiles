@@ -1,0 +1,8 @@
+# Read by every zsh, interactive or not. Puts mise's shims on PATH so tools
+# resolve in contexts that never source .zshrc (editors, launchd, `zsh -c`).
+# Interactive shells replace these with real paths via `mise activate` in .zshrc.
+mise_shims="${HOME}/.local/share/mise/shims"
+if [[ -d "${mise_shims}" && ":${PATH}:" != *":${mise_shims}:"* ]]; then
+  export PATH="${mise_shims}:${PATH}"
+fi
+unset mise_shims
