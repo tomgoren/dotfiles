@@ -293,18 +293,6 @@ vim.lsp.config("terraformls", {
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.tf", "*.tfvars" },
-  callback = function(event)
-    vim.lsp.buf.format({
-      bufnr = event.buf,
-      filter = function(client)
-        return client.name == "terraformls"
-      end,
-    })
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.go",
   callback = function(event)
     vim.lsp.buf.format({
@@ -364,6 +352,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.diagnostic.jump({ count = 1, float = true })
     end, "Next diagnostic")
     map("<leader>e", vim.diagnostic.open_float, "Show diagnostic")
+    map("<leader>tf", function()
+      vim.lsp.buf.format({
+        bufnr = event.buf,
+        filter = function(client)
+          return client.name == "terraformls"
+        end,
+      })
+    end, "Terraform: format buffer")
   end,
 })
 
