@@ -90,6 +90,38 @@ gprune() {
   git worktree prune
 }
 
+# `gco <branch> [git-checkout-args...]`: wraps `git checkout`. If the branch
+# is already checked out in another worktree, git refuses with "is already
+# used by worktree at '<path>'" instead of switching — this jumps into that
+# worktree's directory in the current shell rather than failing. Any other
+# checkout failure (missing branch, uncommitted changes, etc.) is reported
+# as-is.
+gco() {
+  local output status worktree_path
+
+  output="$(git checkout "$@" 2>&1)"
+  status=$?
+
+  if [[ ${status} -eq 0 ]]; then
+    printf '%s\n' "${output}"
+    return 0
+  fi
+
+  if [[ "${output}" == *"is already used by worktree at"* ]]; then
+    worktree_path="${output#*at \'}"
+    worktree_path="${worktree_path%\'*}"
+
+    if [[ -n "${worktree_path}" && -d "${worktree_path}" ]]; then
+      echo "Branch is already checked out at ${worktree_path}; switching there instead." >&2
+      cd "${worktree_path}" || return 1
+      return 0
+    fi
+  fi
+
+  echo "${output}" >&2
+  return "${status}"
+}
+
 gfresh() {
   local current_branch default_branch default_worktree
 
