@@ -7,18 +7,18 @@ It captures practical commands and style conventions observed in the codebase.
 
 - This is a personal dotfiles repo for macOS shell/editor/tooling setup.
 - Main areas:
-  - `chezmoi/dot_zshrc.tmpl`, `chezmoi/dot_config/zsh/functions/extra_shell_functions.zsh`
+  - `chezmoi/dot_zshrc.tmpl`, `chezmoi/private_dot_config/private_zsh/private_functions/extra_shell_functions.zsh`
   - `chezmoi/dot_gitconfig.tmpl`
-  - `chezmoi/dot_config/ghostty/config`
-  - `chezmoi/dot_config/opencode/`
-  - `chezmoi/dot_config/nvim/` (native Neovim + mini.nvim config)
-  - `chezmoi/dot_config/mise/config.toml` (global mise tool versions)
+  - `chezmoi/private_dot_config/private_ghostty/config`
+  - `chezmoi/private_dot_config/private_opencode/`
+  - `chezmoi/private_dot_config/private_nvim/` (native Neovim + mini.nvim config)
+  - `chezmoi/private_dot_config/private_mise/config.toml` (global mise tool versions)
 - There is no app build pipeline in this repository.
 - There is no formal automated test suite in this repository.
 
 ## Environment and Tooling
 
-- Primary language in `chezmoi/dot_config/nvim/`: Lua.
+- Primary language in `chezmoi/private_dot_config/private_nvim/`: Lua.
 - Shell files: POSIX shell + zsh usage.
 - Formatting/lint config files: `.stylua.toml`, `chezmoi/dot_markdownlint-cli2.jsonc`.
 - Neovim uses native `vim.pack`, mini.nvim modules, built-in LSP, and Mason-managed language servers.
@@ -60,16 +60,16 @@ Because this is a dotfiles repo, prefer validation + lint over "build".
 ### Lint / Format Commands
 
 - Lua formatting:
-  - `stylua chezmoi/dot_config/nvim/init.lua`
+  - `stylua chezmoi/private_dot_config/private_nvim/init.lua`
 - Shell lint:
-  - `shellcheck chezmoi/run_once_after_10_bootstrap.sh.tmpl chezmoi/dot_zshrc.tmpl chezmoi/dot_config/zsh/functions/extra_shell_functions.zsh`
+  - `shellcheck chezmoi/run_once_after_10_bootstrap.sh.tmpl chezmoi/dot_zshrc.tmpl chezmoi/private_dot_config/private_zsh/private_functions/extra_shell_functions.zsh`
 - Markdown lint:
   - `markdownlint-cli2 '**/*.md'`
 
 ### Single-file / Targeted Lint Commands
 
 - Single Lua file format:
-  - `stylua chezmoi/dot_config/nvim/init.lua`
+  - `stylua chezmoi/private_dot_config/private_nvim/init.lua`
 - Single shell file lint:
   - `shellcheck chezmoi/dot_zshrc.tmpl`
 - Single markdown file lint:

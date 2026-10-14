@@ -7,6 +7,7 @@ scrollback-limit = 100000000
 window-inherit-working-directory = false
 tab-inherit-working-directory = false
 working-directory = home
+shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo
 keybind = cmd+left=previous_tab
 keybind = cmd+right=next_tab
 keybind = all:cmd+alt+equal=increase_font_size:2
