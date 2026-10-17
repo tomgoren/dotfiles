@@ -89,8 +89,8 @@ machine has installed. Removing a package from the inventory is a manual edit.
 
 Use `opencode-mode` to switch which OpenCode config new shells use:
 
-- `opencode-mode pro` uses `~/.config/opencode/opencode.pro.jsonc` (OpenAI-only, no `opencode/*` models)
-- `opencode-mode fallback` uses `~/.config/opencode/opencode.jsonc` (current fallback profile)
+- `opencode-mode pro` uses `~/.config/opencode/opencode.pro.jsonc` (OpenAI-only)
+- `opencode-mode fallback` uses `~/.config/opencode/opencode.jsonc` (uses the OpenCode catalog by default)
 - `opencode-mode status` shows the currently configured mode
 
 The mode is stored in `~/.config/opencode/mode`. Open a new terminal after switching.

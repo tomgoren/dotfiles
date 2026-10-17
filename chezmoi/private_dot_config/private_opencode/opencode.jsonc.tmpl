@@ -1,71 +1,46 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "opencode/gpt-5.6-terra",
-  "small_model": "opencode/gpt-5.6-luna",
-  "agent": {
+  "model": "opencode/gpt-6-astra",
+  "agents": {
     "build": {
-      "model": "opencode/gpt-5.6-terra",
-      "variant": "medium",
+      "model": "opencode/gpt-6-astra",
       "steps": 50
     },
     "plan": {
-      "model": "opencode/gpt-5.6-sol",
-      "variant": "high",
+      "model": "opencode/gpt-6.1-sol",
       "steps": 15
     },
     "general": {
-      "model": "opencode/gpt-5.6-sol",
-      "variant": "medium"
+      "model": "opencode/gpt-6.1-sol"
     },
     "explore": {
-      "model": "opencode/gpt-5.6-luna",
-      "variant": "low",
+      "model": "opencode/gpt-6-luna",
       "steps": 20
     },
     "compaction": {
-      "model": "opencode/gpt-5.6-luna",
-      "variant": "low"
+      "model": "opencode/gpt-6-luna"
     },
     "title": {
-      "model": "opencode/gpt-5.6-luna",
-      "variant": "none"
+      "model": "opencode/gpt-6-luna"
     },
     "draft": {
       "description": "Quick prototyping and boilerplate with a low-cost model. Use for initial scaffolding, simple utilities, or first drafts before final implementation.",
       "mode": "subagent",
-      "model": "opencode/gpt-5.6-luna",
-      "variant": "low",
-      "permission": {
-        "bash": "deny"
-      },
+      "model": "opencode/gpt-6-luna",
+      "permissions": [
+        { "action": "shell", "resource": "*", "effect": "deny" }
+      ],
       "steps": 10
     },
     "review": {
       "description": "Reviews code with read-only access. Use for security audits, performance analysis, or an independent quality check.",
       "mode": "subagent",
-      "model": "opencode/gpt-5.6-terra",
-      "variant": "high",
-      "permission": {
-        "edit": "deny",
-        "bash": "deny"
-      },
+      "model": "opencode/gpt-6.1-sol",
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "*", "effect": "deny" }
+      ],
       "steps": 10
-    }
-  },
-  "provider": {
-    "opencode": {
-      "models": {
-        "glm-5": {
-          "variants": {
-            "fast": {
-              "temperature": 0.3
-            },
-            "precise": {
-              "temperature": 0.1
-            }
-          }
-        }
-      }
     }
   }
 }
