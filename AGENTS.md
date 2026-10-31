@@ -142,6 +142,11 @@ Follow existing local patterns first; these are repository conventions.
 
 ## Agent Workflow Recommendations
 
+- Use `gco <branch> [base]` to enter or create a task worktree. Source `~/.config/zsh/functions/extra_shell_functions.zsh` first if needed.
+- New branches default to the cached origin default branch. Pass `HEAD` explicitly for stacked work.
+- After `gco`, update the agent session directory to the path printed by `gworktree <branch>`.
+- Use `gupdate` to fetch and fast-forward the default branch without cleanup. `gfresh` also runs `gprune`.
+- `gprune` preserves branches with commits outside the default branch, dirty worktrees, and the current shell's worktree.
 - Before edits, read nearby files for local conventions.
 - After edits, run targeted lint for touched files first.
 - For Neovim changes, run headless Neovim smoke check.

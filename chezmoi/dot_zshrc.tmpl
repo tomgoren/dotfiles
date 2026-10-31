@@ -74,6 +74,7 @@ for script in "${HOME}"/.config/zsh/secrets.d/*.zsh(N); do
 done
 
 autoload -Uz compinit && compinit
+source "${HOME}/.config/zsh/functions/completions.zsh"
 
 # Set up fzf key bindings and fuzzy completion if available
 if command -v fzf >/dev/null 2>&1; then

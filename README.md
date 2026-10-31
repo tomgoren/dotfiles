@@ -76,7 +76,9 @@ developmentWorkdir = "~/dev"
 Set `developmentWorkdir` to the checkout root for that machine, such as `~/work`.
 When omitted, it defaults to `~/dev`.
 Canonical checkouts use `<workdir>/<repo>` and worktrees use `<workdir>/<repo>-<branch>`, with branch-name slashes replaced by hyphens.
-Agents use `gco` for navigation and `gfresh` or `gprune` for requested cleanup after checking for unpublished work.
+Agents use `gco` to enter or create task worktrees and `gupdate` to fast-forward the default branch without cleanup.
+For requested cleanup, `gfresh` also runs `gprune`.
+Pruning preserves dirty worktrees and branches with commits outside the default branch, including many squash-merged branches.
 
 Chezmoi renders one template, `chezmoi/.chezmoitemplates/agent-workflow.md`, into:
 
