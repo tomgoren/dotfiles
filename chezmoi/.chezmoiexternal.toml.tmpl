@@ -1,0 +1,8 @@
+{{ if get . "agentWorkflowNorms" | default false -}}
+[".agents/skills/no-slop"]
+type = "archive"
+url = "https://codeload.github.com/saschb2b/skills/tar.gz/c8c5eb8a2f6e7832b5be234ce758fb05f7be0f9a"
+checksum.sha256 = "e6815319d842867e45e58713cc2d953682ac22e9b2846c5a525b46383933c8d7"
+stripComponents = 4
+include = ["*/skills/productivity/no-slop/**"]
+{{ end -}}

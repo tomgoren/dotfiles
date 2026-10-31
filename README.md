@@ -26,34 +26,34 @@ This repo uses `chezmoi` as the distribution mechanism. The source state is in `
 1. Install `chezmoi` and `1password-cli`.
 2. Initialize from this repo:
 
-```sh
-chezmoi init /path/to/dotfiles/chezmoi
-```
+   ```sh
+   chezmoi init /path/to/dotfiles/chezmoi
+   ```
 
 3. Create local per-machine data at `~/.config/chezmoi/chezmoi.toml`.
 
-You can start from `chezmoi.toml.example` (kept in the repo root as documentation, not managed by chezmoi):
+   Start from `chezmoi.toml.example` in the repo root:
 
-```toml
-sourceDir = "/path/to/dotfiles/chezmoi"
+   ```toml
+   sourceDir = "/path/to/dotfiles/chezmoi"
 
-[data]
-profile = "personal"
+   [data]
+   profile = "personal"
 
-[data.gitIdentityByProfile.personal]
-name = "Your Name"
-email = "you@example.com"
+   [data.gitIdentityByProfile.personal]
+   name = "Your Name"
+   email = "you@example.com"
 
-[data.secretEnvByProfile.personal]
-# EXAMPLE_TOKEN = "op://Private Vault/example item/credential"
-```
+   [data.secretEnvByProfile.personal]
+   # EXAMPLE_TOKEN = "op://Private Vault/example item/credential"
+   ```
 
 4. Apply config:
 
-```sh
-eval "$(op signin --account my.1password.com)"
-chezmoi apply
-```
+   ```sh
+   eval "$(op signin --account my.1password.com)"
+   chezmoi apply
+   ```
 
 ## Secrets and profiles
 
@@ -62,6 +62,60 @@ chezmoi apply
 - Secrets are read at apply-time via `op read op://...` references.
 - Each machine can point at different 1Password accounts/vaults/orgs by setting local data differently.
 - If `chezmoi apply` renders templates that call `op read`, sign in to 1Password first (for example: `eval "$(op signin --account my.1password.com)"`).
+
+## Global agent workflow
+
+The workflow instructions require task worktrees for repository edits and the `no-slop` skill for prose.
+Both profiles default to disabled. To enable them, add these values to the existing `[data]` section in your local chezmoi config:
+
+```toml
+agentWorkflowNorms = true
+developmentWorkdir = "~/dev"
+```
+
+Set `developmentWorkdir` to the checkout root for that machine, such as `~/work`.
+When omitted, it defaults to `~/dev`.
+Canonical checkouts use `<workdir>/<repo>` and worktrees use `<workdir>/<repo>-<branch>`, with branch-name slashes replaced by hyphens.
+Agents use `gco` for navigation and `gfresh` or `gprune` for requested cleanup after checking for unpublished work.
+
+Chezmoi renders one template, `chezmoi/.chezmoitemplates/agent-workflow.md`, into:
+
+- `~/.config/opencode/AGENTS.md` for OpenCode.
+- `~/.claude/rules/workflow.md` for Claude Code.
+- `~/.codex/AGENTS.md` for Codex.
+- `~/.agents/AGENTS.md` for other agents to load through their global instruction settings.
+
+Other agents need their own configuration to load that shared file. It is not a universal discovery path.
+
+Enabling the workflow also installs the complete `no-slop` skill at `~/.agents/skills/no-slop`.
+OpenCode and Codex discover that directory. Claude Code uses a managed symlink at `~/.claude/skills/no-slop`.
+Chezmoi downloads the skill from `saschb2b/skills`, pinned by commit and archive checksum in `chezmoi/.chezmoiexternal.toml.tmpl`.
+
+Update that pin after reviewing an upstream version. Use chezmoi to update this skill rather than the Skills CLI.
+The bundled linter requires Node.js, which the Brewfile includes.
+
+Work-profile opt-in deploys these instructions while keeping personal OpenCode settings excluded.
+
+Apply just the workflow files and skill:
+
+```sh
+mkdir -p ~/.agents/skills ~/.config/opencode ~/.claude/rules ~/.claude/skills ~/.codex
+chezmoi apply ~/.agents/AGENTS.md ~/.config/opencode/AGENTS.md \
+  ~/.claude/rules/workflow.md ~/.codex/AGENTS.md \
+  ~/.agents/skills/no-slop ~/.claude/skills/no-slop
+```
+
+Check the installed skill against the pinned source:
+
+```sh
+chezmoi verify ~/.agents/skills/no-slop ~/.claude/skills/no-slop
+test -f ~/.agents/skills/no-slop/SKILL.md
+test -f ~/.agents/skills/no-slop/slop-lint.mjs
+```
+
+Setting `agentWorkflowNorms = false` stops managing these files but does not delete previously deployed copies.
+To disable active instructions, remove those four files after changing the flag.
+The skill and Claude symlink also remain installed until removed.
 
 ## Bootstrap
 

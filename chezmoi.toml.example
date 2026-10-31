@@ -2,6 +2,8 @@ sourceDir = "/path/to/dotfiles/chezmoi"
 
 [data]
 profile = "personal"
+agentWorkflowNorms = false
+developmentWorkdir = "~/dev"
 
 [data.gitIdentityByProfile.personal]
 name = "Your Name"

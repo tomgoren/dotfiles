@@ -5,11 +5,24 @@
 .config/nvim/nvim-pack-lock.json
 
 {{ if ne (default "personal" .profile) "personal" -}}
-# opencode is personal-only; skip config and helper on work machines.
+# OpenCode settings and helper are personal-only.
+{{ if get . "agentWorkflowNorms" | default false -}}
+.config/opencode/opencode.jsonc
+.config/opencode/opencode.pro.jsonc
+{{ else -}}
 .config/opencode
+{{ end -}}
 .local/bin/opencode-mode
 
 # Claude is used differently at work; let that machine's settings drift freely
 # instead of reconciling them against the source state on every apply.
 .claude/settings.json
+{{ end -}}
+
+{{ if not (get . "agentWorkflowNorms" | default false) -}}
+.agents/AGENTS.md
+.config/opencode/AGENTS.md
+.claude/rules/workflow.md
+.claude/skills/no-slop
+.codex/AGENTS.md
 {{ end -}}
