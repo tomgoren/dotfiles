@@ -94,3 +94,10 @@ Use `opencode-mode` to switch which OpenCode config new shells use:
 - `opencode-mode status` shows the currently configured mode
 
 The mode is stored in `~/.config/opencode/mode`. Open a new terminal after switching.
+
+Both profiles use GPT-6 Astra for coding, GPT-6.1 Sol for planning and review, and GPT-6 Luna for exploration and session maintenance.
+Pro uses GPT-6.1 Terra for general tasks and drafts, with medium and low reasoning effort respectively.
+Fallback uses Sol for general tasks and Luna for drafts. OpenCode's catalog does not yet list Terra (checked October 28, 2026).
+
+Model choices follow the [available catalog](https://opencode.ai/v2/docs/models) and [Terra release guidance](https://openai.com/index/introducing-gpt-6-1-terra).
+Existing sessions retain their selected model. Use `/models` to change it.

@@ -8,7 +8,7 @@
     },
     "plan": {
       "model": "opencode/gpt-6.1-sol",
-      "steps": 15
+      "steps": 30
     },
     "general": {
       "model": "opencode/gpt-6.1-sol"
@@ -23,6 +23,9 @@
     "title": {
       "model": "opencode/gpt-6-luna"
     },
+    "summary": {
+      "model": "opencode/gpt-6-luna"
+    },
     "draft": {
       "description": "Quick prototyping and boilerplate with a low-cost model. Use for initial scaffolding, simple utilities, or first drafts before final implementation.",
       "mode": "subagent",
@@ -30,7 +33,7 @@
       "permissions": [
         { "action": "shell", "resource": "*", "effect": "deny" }
       ],
-      "steps": 10
+      "steps": 20
     },
     "review": {
       "description": "Reviews code with read-only access. Use for security audits, performance analysis, or an independent quality check.",
@@ -40,7 +43,7 @@
         { "action": "edit", "resource": "*", "effect": "deny" },
         { "action": "shell", "resource": "*", "effect": "deny" }
       ],
-      "steps": 10
+      "steps": 30
     }
   }
 }
