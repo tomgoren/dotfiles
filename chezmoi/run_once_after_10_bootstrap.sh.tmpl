@@ -10,6 +10,12 @@ if [[ -f "${HOME}/.Brewfile" ]]; then
   brew bundle --global
 fi
 
+if command -v gh >/dev/null 2>&1; then
+  if ! gh extension list 2>/dev/null | grep -q 'github/gh-stack'; then
+    gh extension install github/gh-stack || echo "Could not install gh-stack; run 'gh auth login' and re-apply."
+  fi
+fi
+
 if command -v nvim >/dev/null 2>&1; then
   nvim --headless '+MasonToolsInstallSync' '+qa'
 fi

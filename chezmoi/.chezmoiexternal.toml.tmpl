@@ -6,3 +6,11 @@ checksum.sha256 = "e6815319d842867e45e58713cc2d953682ac22e9b2846c5a525b46383933c
 stripComponents = 4
 include = ["*/skills/productivity/no-slop/**"]
 {{ end -}}
+
+# github/gh-stack v0.3.0, the official agent skill for the gh stack extension.
+[".agents/skills/gh-stack"]
+type = "archive"
+url = "https://codeload.github.com/github/gh-stack/tar.gz/2a49e6751238633db504655d8a8eba3e433e827d"
+checksum.sha256 = "03426466df7bac44c5ffffc676aa70c29760ca796a25ca670a7f3814d1949f7c"
+stripComponents = 3
+include = ["*/skills/gh-stack/**"]

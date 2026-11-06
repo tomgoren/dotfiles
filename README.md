@@ -115,6 +115,11 @@ test -f ~/.agents/skills/no-slop/SKILL.md
 test -f ~/.agents/skills/no-slop/slop-lint.mjs
 ```
 
+The `gh-stack` skill from `github/gh-stack` installs on every machine, whatever `agentWorkflowNorms` says.
+Chezmoi pins it by commit and checksum in `chezmoi/.chezmoiexternal.toml.tmpl`, and `~/.claude/skills/gh-stack` is a managed symlink to `~/.agents/skills/gh-stack`.
+The bootstrap script installs the `gh stack` extension the skill drives.
+Check it with `chezmoi verify ~/.agents/skills/gh-stack ~/.claude/skills/gh-stack`.
+
 Setting `agentWorkflowNorms = false` stops managing these files but does not delete previously deployed copies.
 To disable active instructions, remove those four files after changing the flag.
 The skill and Claude symlink also remain installed until removed.
