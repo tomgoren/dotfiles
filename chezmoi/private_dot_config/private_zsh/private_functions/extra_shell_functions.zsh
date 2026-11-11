@@ -62,6 +62,17 @@ gpub() {
   git push -u origin "${branch}"
 }
 
+# Succeed when a merged PR for <branch> had the same tip as the local branch.
+# Squash and rebase merges never make the tip an ancestor of the default branch.
+gmerged() {
+  local tip merged_tips
+
+  command -v gh >/dev/null 2>&1 || return 1
+  tip="$(git rev-parse --verify "refs/heads/$1^{commit}" 2>/dev/null)" || return 1
+  merged_tips="$(gh pr list --head "$1" --state merged --json headRefOid --jq '.[].headRefOid' 2>/dev/null)" || return 1
+  grep -qx -- "${tip}" <<<"${merged_tips}"
+}
+
 gprune() {
   local branch upstream worktree_path main_worktree default_branch base
 
@@ -84,8 +95,8 @@ gprune() {
   while IFS=$'\t' read -r branch upstream; do
     [[ -n "${upstream}" && "${branch}" != "${default_branch}" ]] || continue
     git show-ref --verify --quiet "${upstream}" && continue
-    if ! git merge-base --is-ancestor "refs/heads/${branch}" "${base}"; then
-      echo "Skipping ${branch}; it has commits outside ${base}." >&2
+    if ! git merge-base --is-ancestor "refs/heads/${branch}" "${base}" && ! gmerged "${branch}"; then
+      echo "Skipping ${branch}; it is not in ${base} and no merged PR matches its tip." >&2
       continue
     fi
 
