@@ -146,7 +146,8 @@ Follow existing local patterns first; these are repository conventions.
 - New branches default to the cached origin default branch. Pass `HEAD` explicitly for stacked work.
 - After `gco`, update the agent session directory to the path printed by `gworktree <branch>`.
 - Use `gupdate` to fetch, move the canonical checkout onto the default branch, and fast-forward it. `gfresh` also runs `gprune`.
-- `gprune` preserves branches with commits outside the default branch, dirty worktrees, and the current shell's worktree.
+- `gprune` removes branches whose merged PR has the same tip, including branches with no upstream, and clean detached worktrees already in the default branch or a remote branch.
+  It preserves other branches with commits outside the default branch, dirty worktrees, and the current shell's worktree. It only lists orphaned directories.
 - Before edits, read nearby files for local conventions.
 - After edits, run targeted lint for touched files first.
 - For Neovim changes, run headless Neovim smoke check.

@@ -34,15 +34,18 @@ Use the existing zsh helpers for branch navigation and maintenance:
   It removes a clean default-branch worktree to do so.
   If the canonical checkout is dirty, or holds unpublished detached commits, `gupdate` uses a default-branch worktree instead.
 - `gfresh` runs `gupdate`, then `gprune`.
-- `gprune` removes branches with missing upstreams only when the default branch contains all their commits.
-  It also removes branches that track the default branch and add no commits.
+- `gprune` removes a branch, and its worktree, in one of three cases:
+  its upstream is gone and the default branch contains its commits, it tracks the default branch and adds no commits,
+  or a merged PR has the same tip as the local branch. The PR check also covers branches with no upstream, such as those `gco` creates.
+  It removes clean detached worktrees whose commit is in the default branch or a remote branch.
   It preserves dirty worktrees, the canonical checkout, and the worktree containing the current shell.
+  It lists directories that are no longer registered worktrees, and does not delete them.
 
 These are shell functions. If unavailable, source `~/.config/zsh/functions/extra_shell_functions.zsh` in zsh before calling them.
 A helper's directory change lasts only within that shell. Update the agent's working directory separately.
 
 Leave task worktrees available for review. When the user requests cleanup, inspect the affected branches before using `gfresh` or `gprune`.
-Squash-merged branches can remain because their original commits are not ancestors of the default branch. Review them manually.
+Branches with unmerged commits remain, as do squash-merged branches whose PR tip no longer matches the local tip. Review them manually.
 Preserve uncommitted changes and unpublished commits. Never force-remove a worktree to bypass these checks.
 
 ## Prose

@@ -73,8 +73,39 @@ gmerged() {
   grep -qx -- "${tip}" <<<"${merged_tips}"
 }
 
+# Remove a clean worktree for gprune. Return 1 when a guard keeps it, 2 when removal fails.
+_gprune_release() {
+  local worktree_path="$1" main_worktree="$2" label="$3"
+
+  if [[ "${worktree_path}" == "${main_worktree}" ]]; then
+    echo "Skipping ${label}; it is checked out in the main working tree at ${worktree_path}." >&2
+    return 1
+  fi
+
+  if [[ "${PWD}/" == "${worktree_path}/"* ]]; then
+    echo "Skipping ${label}; this shell is inside its worktree." >&2
+    return 1
+  fi
+
+  if [[ -n "$(git -C "${worktree_path}" status --porcelain)" ]]; then
+    echo "Skipping ${label}; its worktree at ${worktree_path} has uncommitted changes."
+    return 1
+  fi
+
+  echo "Removing worktree for ${label} at ${worktree_path}."
+  git worktree remove "${worktree_path}" || return 2
+}
+
+# Remove branches and worktrees whose work the default branch or a merged PR already holds.
+# A branch goes when one of these holds:
+#   - its upstream is gone and the default branch contains its tip or a merged PR matches its tip;
+#   - it tracks the default branch and adds no commits;
+#   - a merged PR has the same tip, even without an upstream (gco creates branches that way).
+# Detached worktrees go when their commit is in the default branch or a remote branch.
+# Dirty worktrees, the main working tree, and the current shell's worktree stay.
 gprune() {
-  local branch upstream worktree_path main_worktree default_branch base
+  local branch upstream worktree_path main_worktree default_branch base tip_in_base
+  local record commit detached orphan gitdir
 
   git rev-parse --git-dir >/dev/null 2>&1 || {
     echo "Not inside a Git repository." >&2
@@ -93,44 +124,66 @@ gprune() {
   main_worktree="$(git worktree list --porcelain | awk '/^worktree /{print substr($0, 10); exit}')"
 
   while IFS=$'\t' read -r branch upstream; do
-    [[ -n "${upstream}" && "${branch}" != "${default_branch}" ]] || continue
-    # A branch that tracks the default branch and adds no commits is redundant.
-    if [[ "${upstream}" == "refs/remotes/origin/${default_branch}" ]] &&
-        git merge-base --is-ancestor "refs/heads/${branch}" "${base}"; then
+    [[ "${branch}" != "${default_branch}" ]] || continue
+
+    tip_in_base=
+    git merge-base --is-ancestor "refs/heads/${branch}" "${base}" && tip_in_base=1
+
+    if [[ -n "${upstream}" ]] && ! git show-ref --verify --quiet "${upstream}"; then
+      if [[ -z "${tip_in_base}" ]] && ! gmerged "${branch}"; then
+        echo "Skipping ${branch}; it is not in ${base} and no merged PR matches its tip." >&2
+        continue
+      fi
+    elif [[ "${upstream}" == "refs/remotes/origin/${default_branch}" && -n "${tip_in_base}" ]]; then
       echo "${branch} tracks ${default_branch} and has no commits of its own."
-    else
-      git show-ref --verify --quiet "${upstream}" && continue
-    fi
-    if ! git merge-base --is-ancestor "refs/heads/${branch}" "${base}" && ! gmerged "${branch}"; then
-      echo "Skipping ${branch}; it is not in ${base} and no merged PR matches its tip." >&2
+    elif ! gmerged "${branch}"; then
       continue
     fi
 
     worktree_path="$(gworktree "${branch}")"
     if [[ -n "${worktree_path}" ]]; then
-      if [[ "${worktree_path}" == "${main_worktree}" ]]; then
-        echo "Skipping ${branch}; it is checked out in the main working tree at ${worktree_path}." >&2
-        continue
-      fi
-
-      if [[ "${PWD}/" == "${worktree_path}/"* ]]; then
-        echo "Skipping ${branch}; this shell is inside its worktree." >&2
-        continue
-      fi
-
-      if [[ -n "$(git -C "${worktree_path}" status --porcelain)" ]]; then
-        echo "Skipping ${branch}; its worktree at ${worktree_path} has uncommitted changes."
-        continue
-      fi
-
-      echo "Removing worktree for ${branch} at ${worktree_path}."
-      git worktree remove "${worktree_path}" || return
+      _gprune_release "${worktree_path}" "${main_worktree}" "${branch}"
+      case $? in
+        1) continue ;;
+        2) return 1 ;;
+      esac
     fi
 
     git branch -D -- "${branch}" || return
   done < <(git for-each-ref --format='%(refname:short)%09%(upstream)' refs/heads)
 
+  # Detached worktrees have no branch name, so match them by commit.
+  worktree_path=
+  commit=
+  detached=
+  while IFS= read -r -d '' record; do
+    case "${record}" in
+      'worktree '*) worktree_path="${record#worktree }"; commit=; detached= ;;
+      'HEAD '*) commit="${record#HEAD }" ;;
+      detached) detached=1 ;;
+      '')
+        if [[ -n "${detached}" && -n "${commit}" && "${worktree_path}" != "${main_worktree}" ]] &&
+            { git merge-base --is-ancestor "${commit}" "${base}" ||
+              [[ -n "$(git for-each-ref --contains "${commit}" refs/remotes)" ]]; }; then
+          _gprune_release "${worktree_path}" "${main_worktree}" "detached HEAD ${commit[1,9]}"
+          [[ $? -ne 2 ]] || return 1
+        fi
+        worktree_path=
+        commit=
+        detached=
+        ;;
+    esac
+  done < <(git worktree list --porcelain -z)
+
   git worktree prune
+
+  # Directories left behind after git forgot their worktree. Report them; do not delete them.
+  for orphan in "${main_worktree}"-*(N/); do
+    [[ -f "${orphan}/.git" ]] || continue
+    gitdir="$(sed -n 's/^gitdir: //p' "${orphan}/.git")"
+    [[ -e "${gitdir}" ]] && continue
+    echo "Orphaned directory, not a registered worktree; left in place: ${orphan}" >&2
+  done
 }
 
 # Enter a branch's worktree, creating it alongside the canonical checkout when needed.

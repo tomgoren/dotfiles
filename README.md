@@ -78,7 +78,8 @@ When omitted, it defaults to `~/dev`.
 Canonical checkouts use `<workdir>/<repo>` and worktrees use `<workdir>/<repo>-<branch>`, with branch-name slashes replaced by hyphens.
 Agents use `gco` to enter or create task worktrees and `gupdate` to enter the canonical checkout and fast-forward the default branch.
 For requested cleanup, `gfresh` also runs `gprune`.
-Pruning preserves dirty worktrees and branches with commits outside the default branch, including many squash-merged branches.
+Pruning removes branches whose merged PR has the same tip, even without an upstream, and clean detached worktrees already in the default branch or a remote branch.
+It preserves dirty worktrees and other branches with commits outside the default branch. It lists orphaned directories without deleting them.
 
 Chezmoi renders one template, `chezmoi/.chezmoitemplates/agent-workflow.md`, into:
 
