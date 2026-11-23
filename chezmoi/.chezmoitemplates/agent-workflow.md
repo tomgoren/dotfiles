@@ -29,7 +29,10 @@ Use the existing zsh helpers for branch navigation and maintenance:
   Use an explicit base for stacked work. Fetch first when the task requires the latest remote commits.
   The helper rejects directory collisions and leaves the current worktree's changes in place.
 - `gworktree <branch>` prints the branch's worktree path.
-- `gupdate` fetches origin, enters the default branch's worktree, and fast-forwards it without cleanup.
+- `gupdate` fetches origin, enters the canonical checkout on the default branch, and fast-forwards it.
+  If the canonical checkout is on another branch, `gupdate` moves it to the default branch.
+  It removes a clean default-branch worktree to do so.
+  If the canonical checkout is dirty, or holds unpublished detached commits, `gupdate` uses a default-branch worktree instead.
 - `gfresh` runs `gupdate`, then `gprune`.
 - `gprune` removes branches with missing upstreams only when the default branch contains all their commits.
   It preserves dirty worktrees, the canonical checkout, and the worktree containing the current shell.

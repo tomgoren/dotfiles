@@ -76,7 +76,7 @@ developmentWorkdir = "~/dev"
 Set `developmentWorkdir` to the checkout root for that machine, such as `~/work`.
 When omitted, it defaults to `~/dev`.
 Canonical checkouts use `<workdir>/<repo>` and worktrees use `<workdir>/<repo>-<branch>`, with branch-name slashes replaced by hyphens.
-Agents use `gco` to enter or create task worktrees and `gupdate` to fast-forward the default branch without cleanup.
+Agents use `gco` to enter or create task worktrees and `gupdate` to enter the canonical checkout and fast-forward the default branch.
 For requested cleanup, `gfresh` also runs `gprune`.
 Pruning preserves dirty worktrees and branches with commits outside the default branch, including many squash-merged branches.
 

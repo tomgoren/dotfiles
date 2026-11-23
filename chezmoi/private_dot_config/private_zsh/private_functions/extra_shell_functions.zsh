@@ -184,8 +184,11 @@ gco() {
   cd -- "${worktree_path}" || return
 }
 
+# Fast-forward the default branch in the canonical checkout and enter it.
+# Move the canonical checkout onto the default branch first when that is safe.
+# Otherwise fall back to a default-branch worktree, as gco does.
 gupdate() {
-  local default_branch
+  local default_branch record canonical current other
 
   git rev-parse --git-dir >/dev/null 2>&1 || {
     echo "Not inside a Git repository." >&2
@@ -194,9 +197,42 @@ gupdate() {
 
   git fetch origin || return
   default_branch="$(gdefault)" || return
-  gco "${default_branch}" || return
+
+  IFS= read -r -d '' record < <(git worktree list --porcelain -z)
+  canonical="${record#worktree }"
+  if [[ "${record}" != 'worktree '* || ! -d "${canonical}" ]]; then
+    echo "Cannot find the canonical checkout." >&2
+    return 1
+  fi
+
+  current="$(git -C "${canonical}" symbolic-ref --quiet --short HEAD 2>/dev/null)"
+  if [[ "${current}" != "${default_branch}" ]]; then
+    other="$(gworktree "${default_branch}")" || return
+
+    if [[ -n "$(git -C "${canonical}" status --porcelain)" ]]; then
+      echo "The canonical checkout at ${canonical} has uncommitted changes; using a ${default_branch} worktree." >&2
+    elif [[ -z "${current}" && -z "$(git -C "${canonical}" for-each-ref --contains HEAD refs/heads refs/remotes)" ]]; then
+      echo "The canonical checkout has a detached HEAD with unpublished commits; using a ${default_branch} worktree." >&2
+    elif [[ -n "${other}" && -n "$(git -C "${other}" status --porcelain)" ]]; then
+      echo "The ${default_branch} worktree at ${other} has uncommitted changes; using it." >&2
+    else
+      # Leave the worktree being removed before git deletes its directory.
+      cd -- "${canonical}" || return
+      if [[ -n "${other}" ]]; then
+        echo "Removing the ${default_branch} worktree at ${other}."
+        git worktree remove "${other}" || return
+      fi
+      git switch "${default_branch}" || return
+    fi
+  fi
+
+  if [[ "$(git -C "${canonical}" symbolic-ref --quiet --short HEAD 2>/dev/null)" == "${default_branch}" ]]; then
+    cd -- "${canonical}" || return
+  else
+    gco "${default_branch}" || return
+  fi
   git merge --ff-only "origin/${default_branch}" || return
-  echo "Ready on ${default_branch}."
+  echo "Ready on ${default_branch} in ${PWD}."
 }
 
 gfresh() {
