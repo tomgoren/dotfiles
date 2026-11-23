@@ -35,6 +35,7 @@ Use the existing zsh helpers for branch navigation and maintenance:
   If the canonical checkout is dirty, or holds unpublished detached commits, `gupdate` uses a default-branch worktree instead.
 - `gfresh` runs `gupdate`, then `gprune`.
 - `gprune` removes branches with missing upstreams only when the default branch contains all their commits.
+  It also removes branches that track the default branch and add no commits.
   It preserves dirty worktrees, the canonical checkout, and the worktree containing the current shell.
 
 These are shell functions. If unavailable, source `~/.config/zsh/functions/extra_shell_functions.zsh` in zsh before calling them.

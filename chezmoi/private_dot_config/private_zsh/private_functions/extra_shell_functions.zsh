@@ -94,7 +94,13 @@ gprune() {
 
   while IFS=$'\t' read -r branch upstream; do
     [[ -n "${upstream}" && "${branch}" != "${default_branch}" ]] || continue
-    git show-ref --verify --quiet "${upstream}" && continue
+    # A branch that tracks the default branch and adds no commits is redundant.
+    if [[ "${upstream}" == "refs/remotes/origin/${default_branch}" ]] &&
+        git merge-base --is-ancestor "refs/heads/${branch}" "${base}"; then
+      echo "${branch} tracks ${default_branch} and has no commits of its own."
+    else
+      git show-ref --verify --quiet "${upstream}" && continue
+    fi
     if ! git merge-base --is-ancestor "refs/heads/${branch}" "${base}" && ! gmerged "${branch}"; then
       echo "Skipping ${branch}; it is not in ${base} and no merged PR matches its tip." >&2
       continue
